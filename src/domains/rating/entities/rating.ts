@@ -2,7 +2,7 @@ import { SetOptional } from 'type-fest';
 import { isInteger } from 'lodash';
 
 import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
-import InvalidRatingError from '@/rating/errors/invalid-rating.error';
+import InvalidRatingError from '@/domains/rating/errors/invalid-rating.error';
 
 export type RatingProperties = {
   value: number;
