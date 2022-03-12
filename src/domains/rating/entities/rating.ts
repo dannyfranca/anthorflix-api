@@ -11,6 +11,7 @@ export type RatingProperties = {
   content: string | null;
   created_at: Date;
   user: User;
+  movie_id: UniqueEntityId;
   comments: Comment[];
 };
 
@@ -25,12 +26,14 @@ export class Rating {
   private _content: string | null;
   private _created_at: Date;
   private _user: User;
+  private _movie_id: UniqueEntityId;
   private _comments: Comment[];
 
   constructor(props: RatingPropertiesInput, id?: UniqueEntityId) {
     this.id = id ?? new UniqueEntityId();
     this._value = props.value;
     this._user = props.user;
+    this._movie_id = props.movie_id;
     this._comments = props.comments;
     this._content = props.content ?? null;
     this._created_at = props.created_at ?? new Date();
@@ -42,6 +45,7 @@ export class Rating {
       value: this.value,
       content: this.content,
       user: this.user,
+      movie_id: this.movie_id,
       created_at: this.created_at,
       comments: this.comments,
     };
@@ -57,6 +61,10 @@ export class Rating {
 
   get user() {
     return this._user;
+  }
+
+  get movie_id() {
+    return this._movie_id;
   }
 
   get comments() {

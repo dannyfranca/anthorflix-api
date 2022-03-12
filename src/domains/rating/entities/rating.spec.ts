@@ -7,6 +7,7 @@ import { Comment } from '@/domains/comment/entities/comment';
 
 const content = 'Some rating content';
 const generateUser = () => new User({ username: 'rating_user' });
+const generateUniqueId = () => new UniqueEntityId();
 const generateComments = () => [
   new Comment({
     content: 'Comment form user 1',
@@ -25,7 +26,8 @@ describe('Rating Tests', () => {
   test('rating constructor', () => {
     const user = generateUser();
     const comments = generateComments();
-    let rating = new Rating({ value: 5, user, comments });
+    const movie_id = generateUniqueId();
+    let rating = new Rating({ value: 5, user, comments, movie_id });
     let created_at: Date;
 
     const props = omit(rating.props, 'created_at');
@@ -34,6 +36,7 @@ describe('Rating Tests', () => {
       content: null,
       user,
       comments,
+      movie_id,
     } as RatingProperties);
     expect(rating.created_at).toBeInstanceOf(Date);
 
@@ -44,6 +47,7 @@ describe('Rating Tests', () => {
       created_at,
       user,
       comments,
+      movie_id,
     });
     expect(rating.props).toStrictEqual({
       content,
@@ -51,6 +55,7 @@ describe('Rating Tests', () => {
       created_at,
       user,
       comments,
+      movie_id,
     } as RatingProperties);
 
     created_at = new Date();
@@ -60,6 +65,7 @@ describe('Rating Tests', () => {
       created_at,
       user,
       comments,
+      movie_id,
     });
     expect(rating.props).toMatchObject({
       content: 'Another content',
@@ -72,16 +78,17 @@ describe('Rating Tests', () => {
   test('rating getters', () => {
     const user = generateUser();
     const comments = generateComments();
+    const movie_id = generateUniqueId();
     let rating: Rating;
     const created_at = new Date();
 
-    rating = new Rating({ content, value: 6, user, comments });
+    rating = new Rating({ content, value: 6, user, comments, movie_id });
     expect(rating.content).toBe(content);
     expect(rating.value).toBe(6);
     expect(rating.user.props).toStrictEqual(user.props);
     expect(rating.created_at).toBeInstanceOf(Date);
 
-    rating = new Rating({ value: 4, created_at, user, comments });
+    rating = new Rating({ value: 4, created_at, user, comments, movie_id });
     expect(rating.content).toBeNull();
     expect(rating.value).toBe(4);
     expect(rating.user.props).toStrictEqual(user.props);
@@ -92,13 +99,14 @@ describe('Rating Tests', () => {
   test('id field', () => {
     const user = generateUser();
     const comments = generateComments();
+    const movie_id = generateUniqueId();
     let rating: Rating;
     const uniqueId = new UniqueEntityId();
 
-    rating = new Rating({ value: 4, user, comments });
+    rating = new Rating({ value: 4, user, comments, movie_id });
     expect(rating.id).toBeInstanceOf(UniqueEntityId);
 
-    rating = new Rating({ value: 4, user, comments }, uniqueId);
+    rating = new Rating({ value: 4, user, comments, movie_id }, uniqueId);
     expect(rating.id).toBeInstanceOf(UniqueEntityId);
     expect(rating.id).toBe(uniqueId);
     expect(rating.id.id).toBe(uniqueId.id);
@@ -107,15 +115,17 @@ describe('Rating Tests', () => {
   it('should throw error on contructor', () => {
     const user = generateUser();
     const comments = generateComments();
-    expect(() => new Rating({ value: 11, user, comments }));
-    expect(() => new Rating({ value: 3.5, user, comments }));
-    expect(() => new Rating({ value: -1, user, comments }));
+    const movie_id = generateUniqueId();
+    expect(() => new Rating({ value: 11, user, comments, movie_id }));
+    expect(() => new Rating({ value: 3.5, user, comments, movie_id }));
+    expect(() => new Rating({ value: -1, user, comments, movie_id }));
   });
 
   it('should count comments', () => {
     const user = generateUser();
     const comments = generateComments();
-    const rating = new Rating({ value: 9, user, comments });
+    const movie_id = generateUniqueId();
+    const rating = new Rating({ value: 9, user, comments, movie_id });
     expect(rating.commentCount()).toBe(2);
   });
 });
