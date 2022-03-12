@@ -36,7 +36,7 @@ export class PrismaTestController {
     await this.dropDatabase();
   }
 
-  async migrate() {
+  private async migrate() {
     await this.createDatabase();
 
     const child = fork(
