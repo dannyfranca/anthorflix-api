@@ -8,7 +8,7 @@ import Name from '@/@seedwork/entities/name';
 export class CreateGenre {
   constructor(private genreRepository: GenreRepository) {}
 
-  execute(dto: CreateGenreInput) {
+  async execute(dto: CreateGenreInput) {
     const name = new Name(dto.name);
     const genre = new Genre({ name });
     return this.genreRepository.create(genre.plain);
