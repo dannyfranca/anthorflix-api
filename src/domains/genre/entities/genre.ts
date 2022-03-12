@@ -1,6 +1,7 @@
+import { SetOptional } from 'type-fest';
+
 import Name from '@/@seedwork/entities/name';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { SetOptional } from 'type-fest';
 
 export type GenreProperties = {
   name: Name;
@@ -28,7 +29,7 @@ export class Genre {
 
   get plain(): PlainGenre {
     return {
-      id: this.id.id,
+      id: this.id.value,
       name: this.name.value,
       created_at: this.created_at,
     };

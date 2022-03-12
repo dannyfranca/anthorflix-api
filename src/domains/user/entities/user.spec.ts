@@ -56,6 +56,6 @@ describe('User Tests', () => {
     user = new User({ username: username }, uniqueId);
     expect(user.id).toBeInstanceOf(UniqueEntityId);
     expect(user.id).toBe(uniqueId);
-    expect(user.id.id).toBe(uniqueId.id);
+    expect(user.id.value).toBe(uniqueId.value);
   });
 });

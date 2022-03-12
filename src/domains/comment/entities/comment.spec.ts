@@ -66,6 +66,6 @@ describe('Comment Tests', () => {
     comment = new Comment({ content: content, user }, uniqueId);
     expect(comment.id).toBeInstanceOf(UniqueEntityId);
     expect(comment.id).toBe(uniqueId);
-    expect(comment.id.id).toBe(uniqueId.id);
+    expect(comment.id.value).toBe(uniqueId.value);
   });
 });

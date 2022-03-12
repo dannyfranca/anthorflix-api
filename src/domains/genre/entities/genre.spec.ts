@@ -60,6 +60,6 @@ describe('Genre Tests', () => {
     genre = new Genre({ name }, uniqueId);
     expect(genre.id).toBeInstanceOf(UniqueEntityId);
     expect(genre.id).toBe(uniqueId);
-    expect(genre.id.id).toBe(uniqueId.id);
+    expect(genre.id.value).toBe(uniqueId.value);
   });
 });

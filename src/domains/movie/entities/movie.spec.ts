@@ -121,6 +121,6 @@ describe('Movie Tests', () => {
     );
     expect(movie.id).toBeInstanceOf(UniqueEntityId);
     expect(movie.id).toBe(uniqueId);
-    expect(movie.id.id).toBe(uniqueId.id);
+    expect(movie.id.value).toBe(uniqueId.value);
   });
 });

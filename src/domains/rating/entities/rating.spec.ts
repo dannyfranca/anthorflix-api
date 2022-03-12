@@ -109,7 +109,7 @@ describe('Rating Tests', () => {
     rating = new Rating({ value: 4, user, comments, movie_id }, uniqueId);
     expect(rating.id).toBeInstanceOf(UniqueEntityId);
     expect(rating.id).toBe(uniqueId);
-    expect(rating.id.id).toBe(uniqueId.id);
+    expect(rating.id.value).toBe(uniqueId.value);
   });
 
   it('should throw error on contructor', () => {
