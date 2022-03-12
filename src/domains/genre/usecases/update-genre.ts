@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 import { GenreRepository } from '../infra/genre.repository';
 import { Genre } from '../entities/genre';
+import {
+  UpdateGenreWhereInput,
+  UpdateGenreDataInput,
+} from '../dto/update-genre.input';
 import Name from '@/@seedwork/entities/name';
-import { UpdateGenreDto } from '../dto/update-genre.dto';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import NotFoundError from '@/@seedwork/errors/not-found';
 
@@ -11,17 +14,18 @@ import NotFoundError from '@/@seedwork/errors/not-found';
 export class UpdateGenre {
   constructor(private genreRepository: GenreRepository) {}
 
-  async execute(dto: UpdateGenreDto) {
-    const uniqueId = new UniqueEntityId(dto.id);
-    const name = new Name(dto.data.name);
-    const genre = new Genre({ name }, uniqueId);
+  async execute(where: UpdateGenreWhereInput, data: UpdateGenreDataInput) {
+    const uniqueId = new UniqueEntityId(where.id);
+    const plainGenre = await this.genreRepository.find(uniqueId.value);
 
-    if (!(await this.genreRepository.find(uniqueId.value)))
-      throw new NotFoundError('Genre not found');
+    if (!plainGenre) throw new NotFoundError('Genre not found');
 
-    return this.genreRepository.update({
-      id: uniqueId.value,
-      data: { name: genre.name.value },
-    });
+    const nameVo = new Name(plainGenre.name);
+    const genre = new Genre({ name: nameVo }, uniqueId);
+
+    if (data.name) genre.name.changeName(data.name);
+
+    const { id, ...props } = genre.plain;
+    return this.genreRepository.update({ id }, { ...props });
   }
 }

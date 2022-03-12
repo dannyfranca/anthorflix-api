@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@/@seedwork/infra/prisma.service';
-import { CreateGenreDto } from '../dto/create-genre.dto';
+import { CreateGenreInput } from '../dto/create-genre.input';
 import { PlainGenre } from '../entities/genre';
-import { UniqueIdDto } from '@/@seedwork/dto/unique-id.dto';
 import { now } from '@/@seedwork/utils/date';
-import { UpdateGenreDto } from '../dto/update-genre.dto';
+import {
+  UpdateGenreDataInput,
+  UpdateGenreWhereInput,
+} from '../dto/update-genre.input';
 
 @Injectable()
 export class GenreRepository {
@@ -33,11 +35,14 @@ export class GenreRepository {
     });
   }
 
-  async create({ name }: CreateGenreDto): Promise<PlainGenre> {
+  async create({ name }: CreateGenreInput): Promise<PlainGenre> {
     return await this.prisma.genre.create({ data: { name } });
   }
 
-  async update({ id, data }: UpdateGenreDto): Promise<PlainGenre> {
+  async update(
+    { id }: UpdateGenreWhereInput,
+    data: UpdateGenreDataInput,
+  ): Promise<PlainGenre> {
     return await this.prisma.genre.update({ where: { id }, data });
   }
 

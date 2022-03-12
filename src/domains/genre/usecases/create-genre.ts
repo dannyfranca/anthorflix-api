@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGenreDto } from '../dto/create-genre.dto';
+import { CreateGenreInput } from '../dto/create-genre.input';
 import { GenreRepository } from '../infra/genre.repository';
 import { Genre } from '../entities/genre';
 import Name from '@/@seedwork/entities/name';
@@ -8,7 +8,7 @@ import Name from '@/@seedwork/entities/name';
 export class CreateGenre {
   constructor(private genreRepository: GenreRepository) {}
 
-  execute(dto: CreateGenreDto) {
+  execute(dto: CreateGenreInput) {
     const name = new Name(dto.name);
     const genre = new Genre({ name });
     return this.genreRepository.create(genre.plain);
