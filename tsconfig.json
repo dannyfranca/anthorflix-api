@@ -23,5 +23,6 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "include": ["src", "test", "**/*spec.ts"]
 }
