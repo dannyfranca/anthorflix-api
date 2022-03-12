@@ -1,4 +1,4 @@
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { SetOptional } from 'type-fest';
 
 export type GenreProperties = {

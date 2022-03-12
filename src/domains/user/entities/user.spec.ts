@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { User, UserProperties } from './user';
 
 const username = 'some_user';
