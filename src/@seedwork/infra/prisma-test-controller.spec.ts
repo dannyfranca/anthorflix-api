@@ -13,5 +13,9 @@ describe('PrismaTestController', () => {
     expect(prismaTestController.url).not.toBe(url);
 
     await prismaTestController.destroy();
+
+    await prismaTestController.init();
+
+    await prismaTestController.destroy();
   });
 });

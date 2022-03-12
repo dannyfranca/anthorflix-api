@@ -8,6 +8,8 @@ import {
   UpdateGenreDataInput,
   UpdateGenreWhereInput,
 } from '../dto/update-genre.input';
+import { UniqueIdInput } from '@/@seedwork/dto/unique-id.input';
+import { HasCreatedAt } from '@/@seedwork/typings/has-created-at';
 
 @Injectable()
 export class GenreRepository {
@@ -17,9 +19,7 @@ export class GenreRepository {
     return await this.prisma.genre.findFirst({
       where: {
         id,
-        deleted_at: {
-          not: null,
-        },
+        deleted_at: null,
       },
       take: 1,
     });
@@ -35,8 +35,10 @@ export class GenreRepository {
     });
   }
 
-  async create({ name }: CreateGenreInput): Promise<PlainGenre> {
-    return await this.prisma.genre.create({ data: { name } });
+  async create(
+    data: CreateGenreInput & UniqueIdInput & HasCreatedAt,
+  ): Promise<PlainGenre> {
+    return await this.prisma.genre.create({ data });
   }
 
   async update(
