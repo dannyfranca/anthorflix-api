@@ -1,6 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseInterceptors } from '@nestjs/common';
 
 import { UniqueIdInput } from '@/@seedwork/dto/unique-id.input';
+import { ErrorsInterceptor } from '@/@seedwork/errors/error.interceptor';
 import { CreateGenreInput } from '../dto/create-genre.input';
 import { GenreObjectType } from '../dto/genre.object';
 import {
@@ -12,6 +14,7 @@ import { DeleteGenre } from '../usecases/delete-genre';
 import { ListGenre } from '../usecases/list-genre';
 import { UpdateGenre } from '../usecases/update-genre';
 
+@UseInterceptors(ErrorsInterceptor)
 @Resolver(() => GenreObjectType)
 export class GenreResolver {
   constructor(
