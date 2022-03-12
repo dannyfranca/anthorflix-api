@@ -2,15 +2,15 @@ import { v4 as uuidV4, validate as isUUID } from 'uuid';
 import InvalidUuidError from '../errors/invalid-uuid.error';
 
 export default class UniqueEntityId {
-  public readonly id: string;
+  public readonly value: string;
 
   constructor(id?: string) {
-    this.id = id ?? UniqueEntityId.generateUuid();
+    this.value = id ?? UniqueEntityId.generateUuid();
     this.validate();
   }
 
   private validate() {
-    if (!UniqueEntityId.isUuid(this.id)) throw new InvalidUuidError();
+    if (!UniqueEntityId.isUuid(this.value)) throw new InvalidUuidError();
   }
 
   private static generateUuid() {

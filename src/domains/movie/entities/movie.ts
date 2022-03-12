@@ -1,6 +1,6 @@
 import { SetOptional } from 'type-fest';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { CastMember } from '@/domains/cast-members/entities/cast-member';
 import { Genre } from '@/domains/genre/entities/genre';
 

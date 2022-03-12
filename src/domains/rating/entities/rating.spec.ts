@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { Rating, RatingProperties } from './rating';
 import { User } from '@/domains/user/entities/user';
 import { Comment } from '@/domains/comment/entities/comment';
@@ -109,7 +109,7 @@ describe('Rating Tests', () => {
     rating = new Rating({ value: 4, user, comments, movie_id }, uniqueId);
     expect(rating.id).toBeInstanceOf(UniqueEntityId);
     expect(rating.id).toBe(uniqueId);
-    expect(rating.id.id).toBe(uniqueId.id);
+    expect(rating.id.value).toBe(uniqueId.value);
   });
 
   it('should throw error on contructor', () => {

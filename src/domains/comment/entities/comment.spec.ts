@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { Comment, CommentProperties } from './comment';
 import { User } from '@/domains/user/entities/user';
 
@@ -66,6 +66,6 @@ describe('Comment Tests', () => {
     comment = new Comment({ content: content, user }, uniqueId);
     expect(comment.id).toBeInstanceOf(UniqueEntityId);
     expect(comment.id).toBe(uniqueId);
-    expect(comment.id.id).toBe(uniqueId.id);
+    expect(comment.id.value).toBe(uniqueId.value);
   });
 });
