@@ -2,17 +2,19 @@ import { omit } from 'lodash';
 
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { Genre } from './genre';
+import Name from '@/@seedwork/entities/name';
 
-const name = 'Genre';
+const strName = 'Genre';
 
 describe('Genre Tests', () => {
   test('genre constructor', () => {
+    const name = new Name(strName);
     let genre = new Genre({ name });
     let created_at: Date;
 
-    const props = omit(genre.props, 'created_at');
-    expect(props).toStrictEqual({
-      name,
+    const props = omit(genre.plain, 'created_at');
+    expect(props).toMatchObject({
+      name: strName,
     });
     expect(genre.created_at).toBeInstanceOf(Date);
 
@@ -21,25 +23,26 @@ describe('Genre Tests', () => {
       name,
       created_at,
     });
-    expect(genre.props).toStrictEqual({
-      name,
+    expect(genre.plain).toMatchObject({
+      name: strName,
       created_at,
     });
 
     created_at = new Date();
-    genre = new Genre({ name: 'Another Genre', created_at });
-    expect(genre.props).toMatchObject({
+    genre = new Genre({ name: new Name('Another Genre'), created_at });
+    expect(genre.plain).toMatchObject({
       name: 'Another Genre',
       created_at,
     });
   });
 
   test('genre getters', () => {
+    const name = new Name(strName);
     let genre: Genre;
     const created_at = new Date();
 
     genre = new Genre({ name });
-    expect(genre.name).toBe(name);
+    expect(genre.name.value).toBe(strName);
     expect(genre.created_at).toBeInstanceOf(Date);
 
     genre = new Genre({ name, created_at });
@@ -47,6 +50,7 @@ describe('Genre Tests', () => {
   });
 
   test('id field', () => {
+    const name = new Name(strName);
     let genre: Genre;
     const uniqueId = new UniqueEntityId();
 

@@ -1,16 +1,23 @@
+import Name from '@/@seedwork/entities/name';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { SetOptional } from 'type-fest';
 
 export type GenreProperties = {
-  name: string;
+  name: Name;
   created_at: Date;
 };
 
 export type GenrePropertiesInput = SetOptional<GenreProperties, 'created_at'>;
 
+export interface PlainGenre {
+  id: string;
+  name: string;
+  created_at: Date;
+}
+
 export class Genre {
   public readonly id: UniqueEntityId;
-  private _name: string;
+  private _name: Name;
   private _created_at: Date;
 
   constructor(props: GenrePropertiesInput, id?: UniqueEntityId) {
@@ -19,9 +26,10 @@ export class Genre {
     this._created_at = props.created_at ?? new Date();
   }
 
-  get props(): GenreProperties {
+  get plain(): PlainGenre {
     return {
-      name: this.name,
+      id: this.id.id,
+      name: this.name.value,
       created_at: this.created_at,
     };
   }
