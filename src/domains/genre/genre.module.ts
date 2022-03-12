@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { CreateGenre } from './usecases/create-genre';
+
+import { GenreResolver } from './adapters/genre.resolver';
+import { GenreController } from './adapters/genre.controller';
 import { GenreRepository } from './infra/genre.repository';
+import { CreateGenre } from './usecases/create-genre';
 import { ListGenre } from './usecases/list-genre';
 import { UpdateGenre } from './usecases/update-genre';
-import { GenreResolver } from './adapters/genre.resolver';
 import { DeleteGenre } from './usecases/delete-genre';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [GenreController],
   providers: [
     GenreResolver,
     GenreRepository,
