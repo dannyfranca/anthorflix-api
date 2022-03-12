@@ -11,6 +11,18 @@ import { UpdateGenreDto } from '../dto/update-genre.dto';
 export class GenreRepository {
   constructor(private prisma: PrismaService) {}
 
+  async find(id: string): Promise<PlainGenre | null> {
+    return await this.prisma.genre.findFirst({
+      where: {
+        id,
+        deleted_at: {
+          not: null,
+        },
+      },
+      take: 1,
+    });
+  }
+
   async list(): Promise<PlainGenre[]> {
     return await this.prisma.genre.findMany({
       where: {
@@ -29,7 +41,7 @@ export class GenreRepository {
     return await this.prisma.genre.update({ where: { id }, data });
   }
 
-  async delete({ id }: UniqueIdDto): Promise<PlainGenre> {
+  async delete(id: string): Promise<PlainGenre> {
     return await this.prisma.genre.update({
       where: { id },
       data: { deleted_at: now() },

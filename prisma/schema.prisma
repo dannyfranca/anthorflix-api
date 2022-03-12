@@ -8,7 +8,8 @@ datasource db {
 }
 
 model Genre {
-  id         String   @id @default(uuid())
+  id         String    @id @default(uuid())
   name       String
-  created_at DateTime @default(now())
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
 }
