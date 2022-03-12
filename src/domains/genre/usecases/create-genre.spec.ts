@@ -38,11 +38,9 @@ describe('Create genre use case', () => {
   it('should throw InvalidNameError', () => {
     jest
       .spyOn(genreRepository, 'create')
-      .mockImplementation(async () => plainGenre);
+      .mockImplementation(async () => makePlainGenre());
 
-    const plainGenre = makePlainGenre();
-
-    expect(() => createGenre.execute(plainGenre)).rejects.toBeInstanceOf(
+    expect(() => createGenre.execute({ name: 'a' })).rejects.toBeInstanceOf(
       InvalidNameError,
     );
   });

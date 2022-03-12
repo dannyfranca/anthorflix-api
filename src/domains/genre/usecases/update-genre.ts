@@ -21,7 +21,7 @@ export class UpdateGenre {
     if (!plainGenre) throw new NotFoundError('Genre not found');
 
     const nameVo = new Name(plainGenre.name);
-    const genre = new Genre({ name: nameVo }, uniqueId);
+    const genre = new Genre({ id: uniqueId, name: nameVo });
 
     if (data.name) genre.name.changeName(data.name);
 
