@@ -8,7 +8,7 @@ import {
 } from '../dto/update-genre.input';
 import Name from '@/@seedwork/entities/name';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import NotFoundError from '@/@seedwork/errors/not-found';
+import NotFoundError from '@/@seedwork/errors/not-found.error';
 
 @Injectable()
 export class UpdateGenre {
