@@ -3,6 +3,7 @@ import { now } from '@/@seedwork/utils/date';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { PlainGenre } from '../entities/genre';
 import { GenreRepository } from './genre.repository';
+import { omit } from 'lodash';
 
 describe('GenreRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -23,6 +24,7 @@ describe('GenreRepository', () => {
       id: uniqueId.value,
       name: 'Some Name',
       created_at: now(),
+      deleted_at: null,
     };
     const newName = 'Another Name';
     const newPlainGenre = { ...plainGenre, name: newName };
@@ -36,9 +38,9 @@ describe('GenreRepository', () => {
     expect(await genreRepository.find(plainGenre.id)).toMatchObject(
       newPlainGenre,
     );
-    expect(await genreRepository.delete(plainGenre.id)).toMatchObject(
-      newPlainGenre,
-    );
+    const deletedGenre = await genreRepository.delete(plainGenre.id);
+    expect(deletedGenre).toMatchObject(omit(newPlainGenre, 'deleted_at'));
+    expect(deletedGenre.deleted_at).toBeInstanceOf(Date);
     expect(await genreRepository.find(plainGenre.id)).toBeNull();
 
     expect(true).toBe(true);

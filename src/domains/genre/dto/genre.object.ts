@@ -11,4 +11,7 @@ export class GenreObjectType implements PlainGenre {
 
   @Field(() => Date, { nullable: false })
   created_at: Date;
+
+  @Field(() => Date, { nullable: true })
+  deleted_at: Date | null;
 }

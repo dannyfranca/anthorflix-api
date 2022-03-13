@@ -13,6 +13,7 @@ const makePlainGenre = (): PlainGenre => {
     id: uniqueId.value,
     name: 'Some Name',
     created_at: now(),
+    deleted_at: null,
   };
 };
 

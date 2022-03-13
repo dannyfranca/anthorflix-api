@@ -25,6 +25,7 @@ describe('List genre use case', () => {
       id: uniqueId.value,
       name: 'Some Name',
       created_at: now(),
+      deleted_at: null,
     };
 
     const result = await listGenre.execute();
