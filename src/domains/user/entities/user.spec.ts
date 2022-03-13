@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { User, UserProperties } from './user';
 
 const username = 'some_user';
@@ -56,6 +56,6 @@ describe('User Tests', () => {
     user = new User({ username: username }, uniqueId);
     expect(user.id).toBeInstanceOf(UniqueEntityId);
     expect(user.id).toBe(uniqueId);
-    expect(user.id.id).toBe(uniqueId.id);
+    expect(user.id.value).toBe(uniqueId.value);
   });
 });

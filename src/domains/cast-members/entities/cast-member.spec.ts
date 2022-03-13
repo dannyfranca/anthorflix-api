@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import {
   CastMember,
   CastMemberProperties,
@@ -75,6 +75,6 @@ describe('Cast member Tests', () => {
     castMember = new CastMember({ name }, uniqueId);
     expect(castMember.id).toBeInstanceOf(UniqueEntityId);
     expect(castMember.id).toBe(uniqueId);
-    expect(castMember.id.id).toBe(uniqueId.id);
+    expect(castMember.id.value).toBe(uniqueId.value);
   });
 });

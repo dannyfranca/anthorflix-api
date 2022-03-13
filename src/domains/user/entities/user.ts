@@ -1,6 +1,6 @@
 import { SetOptional } from 'type-fest';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 
 export type UserProperties = {
   username: string;

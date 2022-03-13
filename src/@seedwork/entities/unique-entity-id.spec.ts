@@ -10,7 +10,7 @@ describe('Unique Id Unit Tests', () => {
     let uniqueId: UniqueEntityId | undefined;
 
     expect(() => (uniqueId = new UniqueEntityId())).not.toThrow();
-    expect(uniqueId?.id).toBeTruthy();
+    expect(uniqueId?.value).toBeTruthy();
     expect(validateSpy).toHaveBeenCalled();
   });
 
@@ -18,7 +18,7 @@ describe('Unique Id Unit Tests', () => {
     const validUUID = '766a36f1-077f-4e18-ab6f-66aa2bad98a5';
     const uniqueId = new UniqueEntityId(validUUID);
 
-    expect(uniqueId.id).toBe(validUUID);
+    expect(uniqueId.value).toBe(validUUID);
     expect(validateSpy).toHaveBeenCalled();
   });
 

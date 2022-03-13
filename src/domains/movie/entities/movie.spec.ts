@@ -1,12 +1,13 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/domain/unique-entity-id';
+import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { Movie, MovieProperties } from './movie';
 import { Genre } from '@/domains/genre/entities/genre';
 import {
   CastMember,
   CastMemberType,
 } from '@/domains/cast-members/entities/cast-member';
+import Name from '@/@seedwork/entities/name';
 
 const title = 'Movie Name';
 const description = 'Some movie description';
@@ -17,8 +18,8 @@ const generateMovieProps = () => ({
   year_launched,
 });
 const generateGenres = () => [
-  new Genre({ name: 'Some genre' }),
-  new Genre({ name: 'Other genre' }),
+  new Genre({ name: new Name('Some genre') }),
+  new Genre({ name: new Name('Other genre') }),
 ];
 const generateCastMembers = () => [
   new CastMember({ name: 'Director', type: CastMemberType.DIRECTOR }),
@@ -86,8 +87,8 @@ describe('Movie Tests', () => {
     expect(movie.title).toBe(title);
     expect(movie.description).toBe(description);
     expect(movie.year_launched).toBe(year_launched);
-    expect(movie.genres.map((v) => v.props)).toStrictEqual(
-      genres.map((v) => v.props),
+    expect(movie.genres.map((v) => v.plain)).toStrictEqual(
+      genres.map((v) => v.plain),
     );
     expect(movie.cast_members.map((v) => v.props)).toStrictEqual(
       cast_members.map((v) => v.props),
@@ -120,6 +121,6 @@ describe('Movie Tests', () => {
     );
     expect(movie.id).toBeInstanceOf(UniqueEntityId);
     expect(movie.id).toBe(uniqueId);
-    expect(movie.id.id).toBe(uniqueId.id);
+    expect(movie.id.value).toBe(uniqueId.value);
   });
 });
