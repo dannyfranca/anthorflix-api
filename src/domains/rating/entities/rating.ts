@@ -2,7 +2,7 @@ import { isInteger } from 'lodash';
 
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import InvalidRatingError from '@/domains/rating/errors/invalid-rating.error';
-import { User } from '@/domains/user/entities/user';
+import { PlainUser, User } from '@/domains/user/entities/user';
 import {
   Entity,
   EntityProperties,
@@ -31,7 +31,7 @@ export interface PlainRating extends PlainEntity {
   value: number;
   content: string | null;
   movie_id: string;
-  user_id: string;
+  user: PlainUser;
 }
 
 export class Rating extends Entity {
@@ -54,7 +54,7 @@ export class Rating extends Entity {
       ...super.plain,
       value: this.value,
       content: this.content?.value ?? null,
-      user_id: this.user.id.value,
+      user: this.user.plain,
       movie_id: this.movie_id.value,
     };
   }

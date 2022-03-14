@@ -21,7 +21,7 @@ describe('Rating Tests', () => {
     expect(rating.plain).toMatchObject({
       value: 5,
       content: null,
-      user_id: user.id.value,
+      user: user.plain,
       movie_id: movie_id.value,
     } as PlainRating);
     expect(rating.created_at).toBeInstanceOf(Date);
@@ -39,7 +39,7 @@ describe('Rating Tests', () => {
       value: 4,
       created_at,
       movie_id: movie_id.value,
-      user_id: user.id.value,
+      user: user.plain,
     } as PlainRating);
 
     created_at = new Date();
