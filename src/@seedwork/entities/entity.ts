@@ -2,11 +2,11 @@ import { SetOptional } from 'type-fest';
 
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 
-export type EntityProperties = {
+export interface EntityProperties {
   id: UniqueEntityId;
   created_at: Date;
   deleted_at: Date | null;
-};
+}
 
 export type EntityPropertiesInput = SetOptional<
   EntityProperties,
@@ -21,8 +21,8 @@ export interface PlainEntity {
 
 export class Entity {
   public readonly id: UniqueEntityId;
-  private _created_at: Date;
-  private _deleted_at: Date | null;
+  protected _created_at: Date;
+  protected _deleted_at: Date | null;
 
   constructor(props: EntityPropertiesInput) {
     this.id = props.id ?? new UniqueEntityId();
