@@ -1,3 +1,4 @@
+import Name from '@/@seedwork/entities/name';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { SetOptional } from 'type-fest';
 
@@ -7,34 +8,48 @@ export enum CastMemberType {
 }
 
 export type CastMemberProperties = {
-  name: string;
+  id: UniqueEntityId;
+  name: Name;
   type: CastMemberType;
   created_at: Date;
+  deleted_at: Date | null;
 };
 
 export type CastMemberPropertiesInput = SetOptional<
   CastMemberProperties,
-  'type' | 'created_at'
+  'id' | 'type' | 'created_at' | 'deleted_at'
 >;
+
+export interface PlainCastMember {
+  id: string;
+  name: string;
+  type: CastMemberType;
+  created_at: Date;
+  deleted_at: Date | null;
+}
 
 export class CastMember {
   public readonly id: UniqueEntityId;
-  private _name: string;
+  private _name: Name;
   private _type: CastMemberType;
   private _created_at: Date;
+  private _deleted_at: Date | null;
 
-  constructor(props: CastMemberPropertiesInput, id?: UniqueEntityId) {
-    this.id = id ?? new UniqueEntityId();
+  constructor(props: CastMemberPropertiesInput) {
+    this.id = props.id ?? new UniqueEntityId();
+    this._created_at = props.created_at ?? new Date();
+    this._deleted_at = props.deleted_at ?? null;
     this._name = props.name;
     this._type = props.type ?? CastMemberType.ACTOR;
-    this._created_at = props.created_at ?? new Date();
   }
 
-  get props(): CastMemberProperties {
+  get plain(): PlainCastMember {
     return {
-      name: this.name,
+      id: this.id.value,
+      name: this.name.value,
       type: this.type,
       created_at: this.created_at,
+      deleted_at: this.deleted_at,
     };
   }
 
@@ -48,5 +63,9 @@ export class CastMember {
 
   get created_at() {
     return this._created_at;
+  }
+
+  get deleted_at() {
+    return this._deleted_at;
   }
 }
