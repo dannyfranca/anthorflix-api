@@ -73,7 +73,7 @@ describe('Rating Tests', () => {
     });
     expect(rating.content?.value).toBe(contentStr);
     expect(rating.value).toBe(6);
-    expect(rating.user.props).toStrictEqual(user.props);
+    expect(rating.user.plain).toStrictEqual(user.plain);
     expect(rating.movie_id.value).toStrictEqual(movie_id.value);
     expect(rating.created_at).toBeInstanceOf(Date);
     expect(rating.deleted_at).toBeNull();
@@ -81,7 +81,7 @@ describe('Rating Tests', () => {
     rating = new Rating({ value: 4, created_at, user, movie_id, deleted_at });
     expect(rating.content).toBeNull();
     expect(rating.value).toBe(4);
-    expect(rating.user.props).toStrictEqual(user.props);
+    expect(rating.user.plain).toStrictEqual(user.plain);
     expect(rating.created_at).toBe(created_at);
     expect(rating.deleted_at).toBeInstanceOf(Date);
     expect(validateSpy).toHaveBeenCalledTimes(2);

@@ -52,11 +52,11 @@ describe('Comment Tests', () => {
     comment = new Comment({ content, user });
     expect(comment.content.value).toBe(contentStr);
     expect(comment.created_at).toBeInstanceOf(Date);
-    expect(comment.user.props).toStrictEqual(user.props);
+    expect(comment.user.plain).toStrictEqual(user.plain);
 
     comment = new Comment({ content, created_at, user });
     expect(comment.created_at).toBe(created_at);
-    expect(comment.user.props).toStrictEqual(user.props);
+    expect(comment.user.plain).toStrictEqual(user.plain);
   });
 
   test('id field', () => {
