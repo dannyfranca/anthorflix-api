@@ -5,10 +5,11 @@ import {
   PlainEntity,
 } from '@/@seedwork/entities/entity';
 import Name from '@/@seedwork/entities/name';
+import Description from '@/@seedwork/entities/description';
 
 export interface MovieProperties extends EntityProperties {
   title: Name;
-  description: string;
+  description: Description;
   year_launched: number;
 }
 
@@ -24,7 +25,7 @@ export interface PlainMovie extends PlainEntity {
 
 export class Movie extends Entity {
   private _title: Name;
-  private _description: string;
+  private _description: Description;
   private _year_launched: number;
 
   constructor(props: MoviePropertiesInput) {
@@ -38,7 +39,7 @@ export class Movie extends Entity {
     return {
       ...super.plain,
       title: this.title.value,
-      description: this.description,
+      description: this.description.value,
       year_launched: this.year_launched,
     };
   }

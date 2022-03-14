@@ -2,13 +2,14 @@ import { omit } from 'lodash';
 
 import { Movie, PlainMovie } from './movie';
 import Name from '@/@seedwork/entities/name';
+import Description from '@/@seedwork/entities/description';
 
 const title = 'Movie Name';
-const description = 'Some movie description';
+const description = 'Some real crazy Lorem Ipsum description';
 const year_launched = 2016;
 const generateMovieProps = () => ({
   title: new Name(title),
-  description,
+  description: new Description(description),
   year_launched,
 });
 
@@ -41,7 +42,7 @@ describe('Movie Tests', () => {
     created_at = new Date();
     movie = new Movie({
       title: new Name('Another Movie Name'),
-      description: 'Another movie description',
+      description: new Description('Another movie description'),
       year_launched: 2020,
       created_at,
     });
@@ -59,13 +60,13 @@ describe('Movie Tests', () => {
 
     movie = new Movie({ ...generateMovieProps() });
     expect(movie.title.value).toBe(title);
-    expect(movie.description).toBe(description);
+    expect(movie.description.value).toBe(description);
     expect(movie.year_launched).toBe(year_launched);
     expect(movie.created_at).toBeInstanceOf(Date);
 
     movie = new Movie({
       title: new Name(title),
-      description,
+      description: new Description(description),
       year_launched,
       created_at,
     });
