@@ -15,5 +15,6 @@ const map: {
 } = {
   NotFoundError: NotFoundException,
   InvalidNameError: BadRequestException,
+  InvalidDescriptionError: BadRequestException,
   InvalidUuidError: BadRequestException,
 };
