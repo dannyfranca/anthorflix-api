@@ -1,7 +1,5 @@
-import { omit } from 'lodash';
-
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { User, UserProperties } from './user';
+import { PlainUser, User } from './user';
 
 const username = 'some_user';
 
@@ -10,28 +8,27 @@ describe('User Tests', () => {
     let user = new User({ username });
     let created_at: Date;
 
-    const props = omit(user.props, 'created_at');
-    expect(props).toStrictEqual({
+    expect(user.plain).toMatchObject({
       username,
-    } as UserProperties);
+    } as PlainUser);
     expect(user.created_at).toBeInstanceOf(Date);
 
     created_at = new Date();
     user = new User({
       username,
       created_at,
-    } as UserProperties);
-    expect(user.props).toStrictEqual({
+    });
+    expect(user.plain).toMatchObject({
       username,
       created_at,
-    } as UserProperties);
+    } as PlainUser);
 
     created_at = new Date();
     user = new User({ username: 'another_user', created_at });
-    expect(user.props).toMatchObject({
+    expect(user.plain).toMatchObject({
       username: 'another_user',
       created_at,
-    } as UserProperties);
+    } as PlainUser);
   });
 
   test('user getters', () => {
@@ -53,7 +50,7 @@ describe('User Tests', () => {
     user = new User({ username: username });
     expect(user.id).toBeInstanceOf(UniqueEntityId);
 
-    user = new User({ username: username }, uniqueId);
+    user = new User({ id: uniqueId, username: username });
     expect(user.id).toBeInstanceOf(UniqueEntityId);
     expect(user.id).toBe(uniqueId);
     expect(user.id.value).toBe(uniqueId.value);

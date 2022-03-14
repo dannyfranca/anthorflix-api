@@ -1,37 +1,41 @@
-import { SetOptional } from 'type-fest';
-
-import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { User } from '@/domains/user/entities/user';
+import {
+  Entity,
+  EntityProperties,
+  EntityPropertiesInput,
+  PlainEntity,
+} from '@/@seedwork/entities/entity';
+import Description from '@/@seedwork/entities/description';
 
-export type CommentProperties = {
-  content: string;
-  created_at: Date;
+export interface CommentProperties extends EntityProperties {
+  content: Description;
   user: User;
-};
+}
 
-export type CommentPropertiesInput = SetOptional<
-  CommentProperties,
-  'created_at'
->;
+export interface CommentPropertiesInput
+  extends EntityPropertiesInput,
+    Pick<CommentProperties, 'content' | 'user'> {}
 
-export class Comment {
-  public readonly id: UniqueEntityId;
-  private _content: string;
-  private _created_at: Date;
+export interface PlainComment extends PlainEntity {
+  content: string;
+  user_id: string;
+}
+
+export class Comment extends Entity {
+  private _content: Description;
   private _user: User;
 
-  constructor(props: CommentPropertiesInput, id?: UniqueEntityId) {
-    this.id = id ?? new UniqueEntityId();
+  constructor(props: CommentPropertiesInput) {
+    super(props);
     this._content = props.content;
     this._user = props.user;
-    this._created_at = props.created_at ?? new Date();
   }
 
-  get props(): CommentProperties {
+  get plain(): PlainComment {
     return {
-      content: this.content,
-      created_at: this.created_at,
-      user: this.user,
+      ...super.plain,
+      content: this.content.value,
+      user_id: this.user.id.value,
     };
   }
 
@@ -41,9 +45,5 @@ export class Comment {
 
   get user() {
     return this._user;
-  }
-
-  get created_at() {
-    return this._created_at;
   }
 }
