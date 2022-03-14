@@ -17,5 +17,5 @@ describe('PrismaTestController', () => {
     await prismaTestController.init();
 
     await prismaTestController.destroy();
-  });
+  }, 15000);
 });
