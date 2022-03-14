@@ -1,7 +1,7 @@
 import { omit } from 'lodash';
 
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { CastMember, CastMemberType, PlainCastMember } from './cast-member';
+import { CastMember, PlainCastMember } from './cast-member';
 import Name from '@/@seedwork/entities/name';
 
 const strName = 'John Doe';
@@ -15,19 +15,19 @@ describe('Cast member Tests', () => {
     const props = omit(castMember.plain, 'created_at');
     expect(props).toMatchObject({
       name: strName,
-      type: CastMemberType.ACTOR,
+      // type: CastMemberType.ACTOR,
     } as PlainCastMember);
     expect(castMember.created_at).toBeInstanceOf(Date);
 
     created_at = new Date();
     castMember = new CastMember({
       name,
-      type: CastMemberType.DIRECTOR,
+      // type: CastMemberType.DIRECTOR,
       created_at,
     });
     expect(castMember.plain).toMatchObject({
       name: strName,
-      type: CastMemberType.DIRECTOR,
+      // type: CastMemberType.DIRECTOR,
       created_at,
       deleted_at: null,
     } as PlainCastMember);
@@ -35,12 +35,12 @@ describe('Cast member Tests', () => {
     created_at = new Date();
     castMember = new CastMember({
       name: new Name('Another CastMember'),
-      type: CastMemberType.ACTOR,
+      // type: CastMemberType.ACTOR,
       created_at,
     });
     expect(castMember.plain).toMatchObject({
       name: 'Another CastMember',
-      type: CastMemberType.ACTOR,
+      // type: CastMemberType.ACTOR,
       created_at,
     });
   });
@@ -53,18 +53,18 @@ describe('Cast member Tests', () => {
 
     castMember = new CastMember({ name, deleted_at });
     expect(castMember.name.value).toBe(strName);
-    expect(castMember.type).toBe(CastMemberType.ACTOR);
+    // expect(castMember.type).toBe(CastMemberType.ACTOR);
     expect(castMember.created_at).toBeInstanceOf(Date);
     expect(castMember.deleted_at).toBeInstanceOf(Date);
 
-    castMember = new CastMember({ name, type: CastMemberType.ACTOR });
-    expect(castMember.type).toBe(CastMemberType.ACTOR);
+    // castMember = new CastMember({ name, type: CastMemberType.ACTOR });
+    // expect(castMember.type).toBe(CastMemberType.ACTOR);
 
-    castMember = new CastMember({
-      name,
-      type: CastMemberType.DIRECTOR,
-    });
-    expect(castMember.type).toBe(CastMemberType.DIRECTOR);
+    // castMember = new CastMember({
+    //   name,
+    //   type: CastMemberType.DIRECTOR,
+    // });
+    // expect(castMember.type).toBe(CastMemberType.DIRECTOR);
 
     castMember = new CastMember({ name, created_at });
     expect(castMember.created_at).toBe(created_at);
