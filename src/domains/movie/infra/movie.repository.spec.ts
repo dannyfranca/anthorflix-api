@@ -1,27 +1,9 @@
 import { omit } from 'lodash';
 
 import { PrismaTestController } from '@/@seedwork/infra/prisma-test-controller';
-import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { PlainMovie } from '../entities/movie';
 import { MovieRepository } from './movie.repository';
-import {
-  randomDate,
-  randomDesc,
-  randomName,
-  randomYear,
-} from '@/@seedwork/utils/mock';
-
-const makePlainMovie = (): PlainMovie => {
-  const uniqueId = new UniqueEntityId();
-  return {
-    id: uniqueId.value,
-    title: randomName(),
-    description: randomDesc(),
-    year_launched: randomYear(),
-    created_at: randomDate(),
-    deleted_at: null,
-  };
-};
+import { makeRandomPlainMovie } from '../utils';
 
 describe('MovieRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -41,7 +23,7 @@ describe('MovieRepository', () => {
     let newTitle: string;
     let newDesc: string;
     let newYear: number;
-    const plainMovie: PlainMovie = makePlainMovie();
+    const plainMovie: PlainMovie = makeRandomPlainMovie();
     newPlainMovie = { ...plainMovie };
 
     expect(await movieRepository.find(plainMovie.id)).toBeNull();
@@ -88,8 +70,8 @@ describe('MovieRepository', () => {
   });
 
   it('should create and list two movies', async () => {
-    const plainMovie1 = makePlainMovie();
-    const plainMovie2 = makePlainMovie();
+    const plainMovie1 = makeRandomPlainMovie();
+    const plainMovie2 = makeRandomPlainMovie();
 
     await movieRepository.create(plainMovie1);
     await movieRepository.create(plainMovie2);

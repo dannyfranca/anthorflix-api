@@ -55,4 +55,8 @@ export class Movie extends Entity {
   get year_launched() {
     return this._year_launched;
   }
+
+  changeYearLaunched(year: number) {
+    this._year_launched = year;
+  }
 }
