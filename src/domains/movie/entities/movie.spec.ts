@@ -1,126 +1,74 @@
 import { omit } from 'lodash';
 
-import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { Movie, MovieProperties } from './movie';
-import { Genre } from '@/domains/genre/entities/genre';
-import {
-  CastMember,
-  CastMemberType,
-} from '@/domains/cast-members/entities/cast-member';
+import { Movie, PlainMovie } from './movie';
 import Name from '@/@seedwork/entities/name';
 
 const title = 'Movie Name';
 const description = 'Some movie description';
 const year_launched = 2016;
 const generateMovieProps = () => ({
-  title,
+  title: new Name(title),
   description,
   year_launched,
 });
-const generateGenres = () => [
-  new Genre({ name: new Name('Some genre') }),
-  new Genre({ name: new Name('Other genre') }),
-];
-const generateCastMembers = () => [
-  new CastMember({ name: 'Director', type: CastMemberType.DIRECTOR }),
-  new CastMember({ name: 'John Doe', type: CastMemberType.ACTOR }),
-  new CastMember({ name: 'Jane Doe', type: CastMemberType.ACTOR }),
-];
 
 describe('Movie Tests', () => {
   test('movie constructor', () => {
-    const genres = generateGenres();
-    const cast_members = generateCastMembers();
-    let movie = new Movie({ ...generateMovieProps(), genres, cast_members });
+    let movie = new Movie({ ...generateMovieProps() });
     let created_at: Date;
 
-    const props = omit(movie.props, 'created_at');
-    expect(props).toStrictEqual({
+    const props = omit(movie.plain, 'created_at');
+    expect(props).toMatchObject({
       title,
       description,
       year_launched,
-      genres,
-      cast_members,
-    } as MovieProperties);
+    } as PlainMovie);
     expect(movie.created_at).toBeInstanceOf(Date);
+    expect(movie.deleted_at).toBeNull();
 
     created_at = new Date();
     movie = new Movie({
       ...generateMovieProps(),
       created_at,
-      genres,
-      cast_members,
     });
-    expect(movie.props).toStrictEqual({
+    expect(movie.plain).toMatchObject({
       title,
       description,
       year_launched,
       created_at,
-      genres,
-      cast_members,
-    } as MovieProperties);
+    } as PlainMovie);
 
     created_at = new Date();
     movie = new Movie({
-      title: 'Another Movie Name',
+      title: new Name('Another Movie Name'),
       description: 'Another movie description',
       year_launched: 2020,
       created_at,
-      genres,
-      cast_members,
     });
-    expect(movie.props).toMatchObject({
+    expect(movie.plain).toMatchObject({
       title: 'Another Movie Name',
       description: 'Another movie description',
       year_launched: 2020,
       created_at,
-    } as MovieProperties);
+    } as PlainMovie);
   });
 
   test('movie getters', () => {
-    const genres = generateGenres();
-    const cast_members = generateCastMembers();
     let movie: Movie;
     const created_at = new Date();
 
-    movie = new Movie({ ...generateMovieProps(), genres, cast_members });
-    expect(movie.title).toBe(title);
+    movie = new Movie({ ...generateMovieProps() });
+    expect(movie.title.value).toBe(title);
     expect(movie.description).toBe(description);
     expect(movie.year_launched).toBe(year_launched);
-    expect(movie.genres.map((v) => v.plain)).toStrictEqual(
-      genres.map((v) => v.plain),
-    );
-    expect(movie.cast_members.map((v) => v.props)).toStrictEqual(
-      cast_members.map((v) => v.props),
-    );
     expect(movie.created_at).toBeInstanceOf(Date);
 
     movie = new Movie({
-      title,
+      title: new Name(title),
       description,
       year_launched,
       created_at,
-      genres,
-      cast_members,
     });
     expect(movie.created_at).toBe(created_at);
-  });
-
-  test('id field', () => {
-    const genres = generateGenres();
-    const cast_members = generateCastMembers();
-    let movie: Movie;
-    const uniqueId = new UniqueEntityId();
-
-    movie = new Movie({ ...generateMovieProps(), genres, cast_members });
-    expect(movie.id).toBeInstanceOf(UniqueEntityId);
-
-    movie = new Movie(
-      { ...generateMovieProps(), genres, cast_members },
-      uniqueId,
-    );
-    expect(movie.id).toBeInstanceOf(UniqueEntityId);
-    expect(movie.id).toBe(uniqueId);
-    expect(movie.id.value).toBe(uniqueId.value);
   });
 });

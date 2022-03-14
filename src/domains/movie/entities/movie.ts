@@ -1,47 +1,45 @@
-import { SetOptional } from 'type-fest';
+import {
+  Entity,
+  EntityProperties,
+  EntityPropertiesInput,
+  PlainEntity,
+} from '@/@seedwork/entities/entity';
+import Name from '@/@seedwork/entities/name';
 
-import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { CastMember } from '@/domains/cast-members/entities/cast-member';
-import { Genre } from '@/domains/genre/entities/genre';
+export interface MovieProperties extends EntityProperties {
+  title: Name;
+  description: string;
+  year_launched: number;
+}
 
-export type MovieProperties = {
+export interface MoviePropertiesInput
+  extends EntityPropertiesInput,
+    Pick<MovieProperties, 'title' | 'description' | 'year_launched'> {}
+
+export interface PlainMovie extends PlainEntity {
   title: string;
   description: string;
   year_launched: number;
-  created_at: Date;
-  cast_members: CastMember[];
-  genres: Genre[];
-};
+}
 
-export type MoviePropertiesInput = SetOptional<MovieProperties, 'created_at'>;
-
-export class Movie {
-  public readonly id: UniqueEntityId;
-  private _title: string;
+export class Movie extends Entity {
+  private _title: Name;
   private _description: string;
   private _year_launched: number;
-  private _created_at: Date;
-  private _cast_members: CastMember[];
-  private _genres: Genre[];
 
-  constructor(props: MoviePropertiesInput, id?: UniqueEntityId) {
-    this.id = id ?? new UniqueEntityId();
+  constructor(props: MoviePropertiesInput) {
+    super(props);
     this._title = props.title;
     this._description = props.description;
     this._year_launched = props.year_launched;
-    this._cast_members = props.cast_members;
-    this._genres = props.genres;
-    this._created_at = props.created_at ?? new Date();
   }
 
-  get props(): MovieProperties {
+  get plain(): PlainMovie {
     return {
-      title: this.title,
+      ...super.plain,
+      title: this.title.value,
       description: this.description,
       year_launched: this.year_launched,
-      cast_members: this.cast_members,
-      genres: this.genres,
-      created_at: this.created_at,
     };
   }
 
@@ -55,17 +53,5 @@ export class Movie {
 
   get year_launched() {
     return this._year_launched;
-  }
-
-  get cast_members() {
-    return this._cast_members;
-  }
-
-  get genres() {
-    return this._genres;
-  }
-
-  get created_at() {
-    return this._created_at;
   }
 }
