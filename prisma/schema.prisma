@@ -55,6 +55,7 @@ model User {
   created_at DateTime  @default(now())
   deleted_at DateTime?
   ratings    Rating[]
+  comments   Comment[]
 }
 
 model Rating {
@@ -65,6 +66,18 @@ model Rating {
   deleted_at DateTime?
   movie      Movie     @relation(fields: [movie_id], references: [id], onDelete: Cascade)
   movie_id   String
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  comments   Comment[]
+}
+
+model Comment {
+  id         String    @id @default(uuid())
+  content    String
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+  rating     Rating    @relation(fields: [rating_id], references: [id], onDelete: Cascade)
+  rating_id  String
   user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
 }
