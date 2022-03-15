@@ -3,7 +3,7 @@ import { omit } from 'lodash';
 import { PrismaTestController } from '@/@seedwork/infra/prisma-test-controller';
 import { PlainRating } from '../entities/rating';
 import { RatingRepository } from './rating.repository';
-import { makeRandomPlainRating, plainRatingToCreateInput } from '../utils';
+import { makeRandomPlainRating } from '../utils';
 import { MovieRepository } from '@/domains/movie/infra/movie.repository';
 import { makeRandomPlainMovie } from '@/domains/movie/utils';
 import { UserRepository } from '@/domains/user/infra/user.repository';
@@ -43,9 +43,9 @@ describe('RatingRepository', () => {
     newPlainRating = { ...plainRating };
 
     expect(await ratingRepository.find(plainRating.id)).toBeNull();
-    expect(
-      await ratingRepository.create(plainRatingToCreateInput(plainRating)),
-    ).toMatchObject(plainRating);
+    expect(await ratingRepository.create(plainRating)).toMatchObject(
+      plainRating,
+    );
     expect(await ratingRepository.find(plainRating.id)).toMatchObject(
       plainRating,
     );
@@ -94,8 +94,8 @@ describe('RatingRepository', () => {
     const plainRating2 = makeRandomPlainRating();
     await createMovieAndUser(plainRating2);
 
-    await ratingRepository.create(plainRatingToCreateInput(plainRating));
-    await ratingRepository.create(plainRatingToCreateInput(plainRating2));
+    await ratingRepository.create(plainRating);
+    await ratingRepository.create(plainRating2);
 
     expect(await ratingRepository.list()).toMatchObject([
       plainRating,

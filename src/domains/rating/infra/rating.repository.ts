@@ -8,6 +8,7 @@ import {
   UpdateRatingDataInput,
   UpdateRatingWhereInput,
 } from '../dto/update-rating.input';
+import { omit } from 'lodash';
 
 @Injectable()
 export class RatingRepository {
@@ -41,7 +42,7 @@ export class RatingRepository {
     data: CreateRatingInput & { user_id: string },
   ): Promise<PlainRating> {
     return await this.prisma.rating.create({
-      data,
+      data: omit(data, 'user'),
       include: {
         user: true,
       },
