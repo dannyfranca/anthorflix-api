@@ -7,6 +7,7 @@ import { isDev } from './@seedwork/config';
 import { GlobalModule } from './@seedwork/global.module';
 import { GenreModule } from './domains/genre/genre.module';
 import { CastMemberModule } from './domains/cast-members/cast-member.module';
+import { RatingModule } from './domains/rating/rating.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CastMemberModule } from './domains/cast-members/cast-member.module';
     GlobalModule,
     GenreModule,
     CastMemberModule,
+    RatingModule,
   ],
   controllers: [],
   providers: [],
