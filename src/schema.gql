@@ -2,8 +2,50 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CastMemberObjectType {
+  created_at: DateTime!
+  deleted_at: DateTime
+  id: ID!
+  name: String!
+}
+
+type CommentObjectType {
+  content: String!
+  created_at: DateTime!
+  deleted_at: DateTime
+  id: ID!
+  rating_id: ID!
+  user: UserObjectType!
+  user_id: ID!
+}
+
+input CreateCastMemberInput {
+  name: String!
+}
+
+input CreateCommentInput {
+  content: String!
+  rating_id: ID!
+}
+
 input CreateGenreInput {
   name: String!
+}
+
+input CreateMovieInput {
+  description: String!
+  title: String!
+  year_launched: Int!
+}
+
+input CreateRatingInput {
+  content: String = null
+  movie_id: ID!
+  value: Int!
+}
+
+input CreateUserInput {
+  username: String!
 }
 
 """
@@ -13,21 +55,77 @@ scalar DateTime
 
 type GenreObjectType {
   created_at: DateTime!
+  deleted_at: DateTime
   id: ID!
   name: String!
 }
 
+type MovieObjectType {
+  created_at: DateTime!
+  deleted_at: DateTime
+  description: String!
+  id: ID!
+  title: String!
+  year_launched: Int!
+}
+
 type Mutation {
+  createCastMember(data: CreateCastMemberInput!): CastMemberObjectType!
+  createComment(data: CreateCommentInput!): CommentObjectType!
   createGenre(data: CreateGenreInput!): GenreObjectType!
+  createMovie(data: CreateMovieInput!): MovieObjectType!
+  createRating(data: CreateRatingInput!): RatingObjectType!
+  createUser(data: CreateUserInput!): UserObjectType!
+  deleteCastMember(data: UniqueIdInput!): CastMemberObjectType!
+  deleteComment(data: UniqueIdInput!): CommentObjectType!
   deleteGenre(data: UniqueIdInput!): GenreObjectType!
+  deleteMovie(data: UniqueIdInput!): MovieObjectType!
+  deleteRating(data: UniqueIdInput!): RatingObjectType!
+  deleteUser(data: UniqueIdInput!): UserObjectType!
+  updateCastMember(data: UpdateCastMemberDataInput!, where: UpdateCastMemberWhereInput!): CastMemberObjectType!
+  updateComment(data: UpdateCommentDataInput!, where: UpdateCommentWhereInput!): CommentObjectType!
   updateGenre(data: UpdateGenreDataInput!, where: UpdateGenreWhereInput!): GenreObjectType!
+  updateMovie(data: UpdateMovieDataInput!, where: UpdateMovieWhereInput!): MovieObjectType!
+  updateRating(data: UpdateRatingDataInput!, where: UpdateRatingWhereInput!): RatingObjectType!
 }
 
 type Query {
+  listCastMembers: [CastMemberObjectType!]!
+  listComments: [CommentObjectType!]!
   listGenres: [GenreObjectType!]!
+  listMovies: [MovieObjectType!]!
+  listRatings: [RatingObjectType!]!
+  listUsers: [UserObjectType!]!
+}
+
+type RatingObjectType {
+  content: String!
+  created_at: DateTime!
+  deleted_at: DateTime
+  id: ID!
+  movie_id: ID!
+  user: UserObjectType!
+  user_id: ID!
+  value: Int!
 }
 
 input UniqueIdInput {
+  id: ID!
+}
+
+input UpdateCastMemberDataInput {
+  name: String!
+}
+
+input UpdateCastMemberWhereInput {
+  id: ID!
+}
+
+input UpdateCommentDataInput {
+  content: String
+}
+
+input UpdateCommentWhereInput {
   id: ID!
 }
 
@@ -37,4 +135,30 @@ input UpdateGenreDataInput {
 
 input UpdateGenreWhereInput {
   id: ID!
+}
+
+input UpdateMovieDataInput {
+  description: String
+  title: String
+  year_launched: Int
+}
+
+input UpdateMovieWhereInput {
+  id: ID!
+}
+
+input UpdateRatingDataInput {
+  content: String
+  value: Int
+}
+
+input UpdateRatingWhereInput {
+  id: ID!
+}
+
+type UserObjectType {
+  created_at: DateTime!
+  deleted_at: DateTime
+  id: ID!
+  username: String!
 }
