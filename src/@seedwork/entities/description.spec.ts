@@ -5,9 +5,8 @@ const descStr = 'John Doe is a unknown man.';
 
 describe('Description value object', () => {
   it('should accept valid description', () => {
-    const description = new Description(descStr);
-
-    expect(description.value).toBe(descStr);
+    expect(new Description(descStr).value).toBe(descStr);
+    expect(new Description(null).value).toBeNull();
   });
 
   it('should accept description change', () => {
@@ -17,6 +16,10 @@ describe('Description value object', () => {
     description.changeDescription(newDesc);
 
     expect(description.value).toBe(newDesc);
+
+    description.changeDescription(null);
+
+    expect(description.value).toBeNull();
   });
 
   it('should reject description change', () => {
