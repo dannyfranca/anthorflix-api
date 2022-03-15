@@ -29,6 +29,8 @@
     "@prisma/client": "^3.10.0",
     "apollo-server-express": "^3.6.4",
     "chance": "^1.1.8",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "graphql": "^16.3.0",
     "helmet": "^5.0.2",
     "lodash": "4.17.21",
