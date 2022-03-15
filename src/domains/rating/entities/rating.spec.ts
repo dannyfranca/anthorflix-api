@@ -19,7 +19,6 @@ describe('Rating Tests', () => {
     let rating = new Rating({ value: 5, content, user, movie_id });
     let created_at: Date;
 
-    console.log(rating.plain);
     expect(rating.plain).toMatchObject({
       value: 5,
       content: null,

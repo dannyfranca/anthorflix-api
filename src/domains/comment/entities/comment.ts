@@ -34,7 +34,7 @@ export class Comment extends Entity {
   get plain(): PlainComment {
     return {
       ...super.plain,
-      content: this.content.value,
+      content: this.content.value ?? '',
       user_id: this.user.id.value,
     };
   }

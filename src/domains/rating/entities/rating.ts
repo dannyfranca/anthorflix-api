@@ -10,7 +10,6 @@ import {
   PlainEntity,
 } from '@/@seedwork/entities/entity';
 import Description from '@/@seedwork/entities/description';
-import { SetOptional } from 'type-fest';
 
 interface RatingOnlyProperties {
   value: number;
