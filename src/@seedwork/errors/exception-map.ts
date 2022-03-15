@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   HttpException,
   InternalServerErrorException,
   NotFoundException,
@@ -25,6 +26,7 @@ const exceptionMap: {
   };
 } = {
   NotFoundError: NotFoundException,
+  AlreadyExistsError: ConflictException,
   InvalidNameError: BadRequestException,
   InvalidUsernameError: BadRequestException,
   InvalidDescriptionError: BadRequestException,

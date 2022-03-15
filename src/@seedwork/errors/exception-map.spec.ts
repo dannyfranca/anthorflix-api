@@ -1,10 +1,12 @@
 import {
   BadRequestException,
+  ConflictException,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 
 import { resolveException } from './exception-map';
+import AlreadyExistsError from './already-exists.error';
 import InvalidDescriptionError from './invalid-description.error';
 import InvalidNameError from './invalid-name.error';
 import InvalidUuidError from './invalid-uuid.error';
@@ -12,6 +14,9 @@ import NotFoundError from './not-found.error';
 
 describe('Exception map tests', () => {
   test('match exceptions', () => {
+    expect(resolveException(new AlreadyExistsError())).toBeInstanceOf(
+      ConflictException,
+    );
     expect(resolveException(new NotFoundError())).toBeInstanceOf(
       NotFoundException,
     );
