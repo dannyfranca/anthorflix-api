@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { omit } from 'lodash';
 
 import { PrismaService } from '@/@seedwork/infra/prisma.service';
+import { now } from '@/@seedwork/utils/date';
 import { CreateRatingInput } from '../dto/create-rating.input';
 import { PlainRating } from '../entities/rating';
-import { now } from '@/@seedwork/utils/date';
 import {
   UpdateRatingDataInput,
   UpdateRatingWhereInput,
 } from '../dto/update-rating.input';
-import { omit } from 'lodash';
 
 @Injectable()
 export class RatingRepository {
