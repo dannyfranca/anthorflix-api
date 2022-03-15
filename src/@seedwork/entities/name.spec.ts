@@ -1,7 +1,7 @@
 import InvalidNameError from '../errors/invalid-name.error';
 import Name from './name';
 
-describe('User name value object', () => {
+describe('Name value object', () => {
   it('should accept valid name', () => {
     const name = new Name('John Doe');
 

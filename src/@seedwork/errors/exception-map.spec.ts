@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { resolveException } from './exception-map';
+import InvalidDescriptionError from './invalid-description.error';
 import InvalidNameError from './invalid-name.error';
 import InvalidUuidError from './invalid-uuid.error';
 import NotFoundError from './not-found.error';
@@ -15,6 +16,9 @@ describe('Exception map tests', () => {
       NotFoundException,
     );
     expect(resolveException(new InvalidNameError())).toBeInstanceOf(
+      BadRequestException,
+    );
+    expect(resolveException(new InvalidDescriptionError())).toBeInstanceOf(
       BadRequestException,
     );
     expect(resolveException(new InvalidUuidError())).toBeInstanceOf(

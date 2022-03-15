@@ -12,4 +12,59 @@ model Genre {
   name       String
   created_at DateTime  @default(now())
   deleted_at DateTime?
+  movies     Movie[]
+}
+
+model Movie {
+  id                         String                         @id @default(uuid())
+  title                      String
+  description                String
+  year_launched              Int
+  created_at                 DateTime                       @default(now())
+  deleted_at                 DateTime?
+  genres                     Genre[]
+  cast_member_participations CastMemberMovieParticipation[]
+  ratings                    Rating[]
+}
+
+model CastMemberMovieParticipation {
+  id             String                      @id @default(uuid())
+  type           CastMemberParticipationType
+  movie          Movie                       @relation(fields: [movie_id], references: [id], onDelete: Cascade)
+  movie_id       String
+  cast_member    CastMember                  @relation(fields: [cast_member_id], references: [id], onDelete: Cascade)
+  cast_member_id String
+}
+
+enum CastMemberParticipationType {
+  ACTOR
+  DIRECTOR
+}
+
+model CastMember {
+  id                   String                         @id @default(uuid())
+  name                 String
+  created_at           DateTime                       @default(now())
+  deleted_at           DateTime?
+  movie_participations CastMemberMovieParticipation[]
+}
+
+model User {
+  id         String    @id @default(uuid())
+  username   String
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+  ratings    Rating[]
+}
+
+model Rating {
+  id         String    @id @default(uuid())
+  value      Int
+  content    String?
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+  movie      Movie     @relation(fields: [movie_id], references: [id], onDelete: Cascade)
+  movie_id   String
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
 }

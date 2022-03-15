@@ -1,37 +1,38 @@
-import { SetOptional } from 'type-fest';
+import {
+  Entity,
+  EntityProperties,
+  EntityPropertiesInput,
+  PlainEntity,
+} from '@/@seedwork/entities/entity';
 
-import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-
-export type UserProperties = {
+export interface UserProperties extends EntityProperties {
   username: string;
-  created_at: Date;
-};
+}
 
-export type UserPropertiesInput = SetOptional<UserProperties, 'created_at'>;
+export interface UserPropertiesInput
+  extends EntityPropertiesInput,
+    Pick<UserProperties, 'username'> {}
 
-export class User {
-  public readonly id: UniqueEntityId;
+export interface PlainUser extends PlainEntity {
+  username: string;
+}
+
+export class User extends Entity {
   private _username: string;
-  private _created_at: Date;
 
-  constructor(props: UserPropertiesInput, id?: UniqueEntityId) {
-    this.id = id ?? new UniqueEntityId();
+  constructor(props: UserPropertiesInput) {
+    super(props);
     this._username = props.username;
-    this._created_at = props.created_at ?? new Date();
   }
 
-  get props(): UserProperties {
+  get plain(): PlainUser {
     return {
+      ...super.plain,
       username: this.username,
-      created_at: this.created_at,
     };
   }
 
   get username() {
     return this._username;
-  }
-
-  get created_at() {
-    return this._created_at;
   }
 }

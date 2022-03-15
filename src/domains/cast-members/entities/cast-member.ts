@@ -1,40 +1,47 @@
+import {
+  Entity,
+  EntityProperties,
+  EntityPropertiesInput,
+  PlainEntity,
+} from '@/@seedwork/entities/entity';
+import Name from '@/@seedwork/entities/name';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { SetOptional } from 'type-fest';
 
-export enum CastMemberType {
-  DIRECTOR = 'DIRECTOR',
-  ACTOR = 'ACTOR',
+// export enum CastMemberType {
+//   DIRECTOR = 'DIRECTOR',
+//   ACTOR = 'ACTOR',
+// }
+
+export interface CastMemberProperties extends EntityProperties {
+  name: Name;
+  // type: CastMemberType;
 }
 
-export type CastMemberProperties = {
+export interface CastMemberPropertiesInput
+  extends EntityPropertiesInput,
+    Pick<CastMemberProperties, 'name'> {}
+
+export interface PlainCastMember extends PlainEntity {
   name: string;
-  type: CastMemberType;
-  created_at: Date;
-};
+  // type: CastMemberType;
+}
 
-export type CastMemberPropertiesInput = SetOptional<
-  CastMemberProperties,
-  'type' | 'created_at'
->;
-
-export class CastMember {
+export class CastMember extends Entity {
   public readonly id: UniqueEntityId;
-  private _name: string;
-  private _type: CastMemberType;
-  private _created_at: Date;
+  private _name: Name;
+  // private _type: CastMemberType;
 
-  constructor(props: CastMemberPropertiesInput, id?: UniqueEntityId) {
-    this.id = id ?? new UniqueEntityId();
+  constructor(props: CastMemberPropertiesInput) {
+    super(props);
     this._name = props.name;
-    this._type = props.type ?? CastMemberType.ACTOR;
-    this._created_at = props.created_at ?? new Date();
+    // this._type = props.type ?? CastMemberType.ACTOR;
   }
 
-  get props(): CastMemberProperties {
+  get plain(): PlainCastMember {
     return {
-      name: this.name,
-      type: this.type,
-      created_at: this.created_at,
+      ...super.plain,
+      name: this.name.value,
+      // type: this.type,
     };
   }
 
@@ -42,11 +49,7 @@ export class CastMember {
     return this._name;
   }
 
-  get type() {
-    return this._type;
-  }
-
-  get created_at() {
-    return this._created_at;
-  }
+  // get type() {
+  //   return this._type;
+  // }
 }
