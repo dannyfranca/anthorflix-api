@@ -14,15 +14,17 @@ describe('Rating Tests', () => {
   test('rating constructor', () => {
     const user = generateUser();
     const movie_id = generateUniqueId();
-    let rating = new Rating({ value: 5, user, movie_id });
+    const content = new Description(null);
+
+    let rating = new Rating({ value: 5, content, user, movie_id });
     let created_at: Date;
 
-    console.log(rating.plain);
     expect(rating.plain).toMatchObject({
       value: 5,
       content: null,
-      user_id: user.id.value,
+      user: user.plain,
       movie_id: movie_id.value,
+      user_id: user.id.value,
     } as PlainRating);
     expect(rating.created_at).toBeInstanceOf(Date);
 
@@ -40,6 +42,7 @@ describe('Rating Tests', () => {
       created_at,
       movie_id: movie_id.value,
       user_id: user.id.value,
+      user: user.plain,
     } as PlainRating);
 
     created_at = new Date();
@@ -78,8 +81,15 @@ describe('Rating Tests', () => {
     expect(rating.created_at).toBeInstanceOf(Date);
     expect(rating.deleted_at).toBeNull();
 
-    rating = new Rating({ value: 4, created_at, user, movie_id, deleted_at });
-    expect(rating.content).toBeNull();
+    rating = new Rating({
+      value: 4,
+      content: new Description(null),
+      created_at,
+      user,
+      movie_id,
+      deleted_at,
+    });
+    expect(rating.content.value).toBeNull();
     expect(rating.value).toBe(4);
     expect(rating.user.plain).toStrictEqual(user.plain);
     expect(rating.created_at).toBe(created_at);
@@ -93,10 +103,21 @@ describe('Rating Tests', () => {
     let rating: Rating;
     const uniqueId = new UniqueEntityId();
 
-    rating = new Rating({ value: 4, user, movie_id });
+    rating = new Rating({
+      value: 4,
+      content: new Description(null),
+      user,
+      movie_id,
+    });
     expect(rating.id).toBeInstanceOf(UniqueEntityId);
 
-    rating = new Rating({ id: uniqueId, value: 4, user, movie_id });
+    rating = new Rating({
+      id: uniqueId,
+      value: 4,
+      content: new Description(null),
+      user,
+      movie_id,
+    });
     expect(rating.id).toBeInstanceOf(UniqueEntityId);
     expect(rating.id).toBe(uniqueId);
     expect(rating.id.value).toBe(uniqueId.value);
@@ -105,8 +126,26 @@ describe('Rating Tests', () => {
   it('should throw error on contructor', () => {
     const user = generateUser();
     const movie_id = generateUniqueId();
-    expect(() => new Rating({ value: 11, user, movie_id }));
-    expect(() => new Rating({ value: 3.5, user, movie_id }));
-    expect(() => new Rating({ value: -1, user, movie_id }));
+    const content = new Description(null);
+
+    expect(() => new Rating({ value: 11, content, user, movie_id }));
+    expect(() => new Rating({ value: 3.5, content, user, movie_id }));
+    expect(() => new Rating({ value: -1, content, user, movie_id }));
+  });
+
+  it('should change value', () => {
+    const user = generateUser();
+    const movie_id = generateUniqueId();
+    const content = new Description(null);
+
+    expect(() =>
+      new Rating({ value: 1, content, user, movie_id }).changeValue(12),
+    );
+    expect(() =>
+      new Rating({ value: 2, content, user, movie_id }).changeValue(4.5),
+    );
+    expect(() =>
+      new Rating({ value: 3, content, user, movie_id }).changeValue(-2),
+    );
   });
 });

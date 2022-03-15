@@ -2,7 +2,7 @@ import { isInteger } from 'lodash';
 
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import InvalidRatingError from '@/domains/rating/errors/invalid-rating.error';
-import { User } from '@/domains/user/entities/user';
+import { PlainUser, User } from '@/domains/user/entities/user';
 import {
   Entity,
   EntityProperties,
@@ -10,11 +10,10 @@ import {
   PlainEntity,
 } from '@/@seedwork/entities/entity';
 import Description from '@/@seedwork/entities/description';
-import { SetOptional } from 'type-fest';
 
 interface RatingOnlyProperties {
   value: number;
-  content: Description | null;
+  content: Description;
   user: User;
   movie_id: UniqueEntityId;
 }
@@ -25,18 +24,19 @@ export interface RatingProperties
 
 export interface RatingPropertiesInput
   extends EntityPropertiesInput,
-    SetOptional<RatingOnlyProperties, 'content'> {}
+    RatingOnlyProperties {}
 
 export interface PlainRating extends PlainEntity {
   value: number;
   content: string | null;
   movie_id: string;
   user_id: string;
+  user: PlainUser;
 }
 
 export class Rating extends Entity {
   private _value: number;
-  private _content: Description | null;
+  private _content: Description;
   private _user: User;
   private _movie_id: UniqueEntityId;
 
@@ -45,7 +45,7 @@ export class Rating extends Entity {
     this._value = props.value;
     this._user = props.user;
     this._movie_id = props.movie_id;
-    this._content = props.content ?? null;
+    this._content = props.content;
     this.validate();
   }
 
@@ -54,6 +54,7 @@ export class Rating extends Entity {
       ...super.plain,
       value: this.value,
       content: this.content?.value ?? null,
+      user: this.user.plain,
       user_id: this.user.id.value,
       movie_id: this.movie_id.value,
     };
@@ -73,6 +74,11 @@ export class Rating extends Entity {
 
   get movie_id() {
     return this._movie_id;
+  }
+
+  changeValue(value: number) {
+    this._value = value;
+    this.validate();
   }
 
   validate() {

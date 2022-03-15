@@ -24,6 +24,7 @@ model Movie {
   deleted_at                 DateTime?
   genres                     Genre[]
   cast_member_participations CastMemberMovieParticipation[]
+  ratings                    Rating[]
 }
 
 model CastMemberMovieParticipation {
@@ -46,4 +47,24 @@ model CastMember {
   created_at           DateTime                       @default(now())
   deleted_at           DateTime?
   movie_participations CastMemberMovieParticipation[]
+}
+
+model User {
+  id         String    @id @default(uuid())
+  username   String
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+  ratings    Rating[]
+}
+
+model Rating {
+  id         String    @id @default(uuid())
+  value      Int
+  content    String?
+  created_at DateTime  @default(now())
+  deleted_at DateTime?
+  movie      Movie     @relation(fields: [movie_id], references: [id], onDelete: Cascade)
+  movie_id   String
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
 }

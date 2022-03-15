@@ -6,9 +6,20 @@ import {
 } from '@nestjs/common';
 
 export const resolveException = (error: Error): HttpException =>
-  new (map[error?.name] ?? InternalServerErrorException)(error?.message);
+  new (exceptionMap[error?.name] ?? InternalServerErrorException)(
+    error?.message,
+  );
 
-const map: {
+export const registerException = (
+  key: string,
+  exception: {
+    new (...args: any): HttpException;
+  },
+) => {
+  exceptionMap[key] = exception;
+};
+
+const exceptionMap: {
   [k: string]: {
     new (...args: any): HttpException;
   };
