@@ -26,6 +26,7 @@ const exceptionMap: {
 } = {
   NotFoundError: NotFoundException,
   InvalidNameError: BadRequestException,
+  InvalidUsernameError: BadRequestException,
   InvalidDescriptionError: BadRequestException,
   InvalidUuidError: BadRequestException,
 };
