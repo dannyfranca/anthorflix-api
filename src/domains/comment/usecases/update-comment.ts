@@ -11,6 +11,7 @@ import {
   UpdateCommentWhereInput,
   UpdateCommentDataInput,
 } from '../dto/update-comment.input';
+import Username from '@/@seedwork/entities/username';
 
 @Injectable()
 export class UpdateComment {
@@ -30,13 +31,16 @@ export class UpdateComment {
 
     const content = new RequiredDescription(plainComment.content);
 
+    const username = new Username(plainUser.username);
+    const user_id = new UniqueEntityId(plainComment.user_id);
     const comment = new Comment({
       id: uniqueId,
       content,
       rating_id: new UniqueEntityId(plainComment.rating_id),
       user: new User({
         ...plainUser,
-        id: new UniqueEntityId(plainComment.user_id),
+        id: user_id,
+        username,
       }),
     });
 

@@ -11,6 +11,7 @@ import NotFoundError from '@/@seedwork/errors/not-found.error';
 import Description from '@/@seedwork/entities/description';
 import { UserRepository } from '@/domains/user/infra/user.repository';
 import { User } from '@/domains/user/entities/user';
+import Username from '@/@seedwork/entities/username';
 
 @Injectable()
 export class UpdateRating {
@@ -30,6 +31,8 @@ export class UpdateRating {
 
     const content = new Description(plainRating.content);
 
+    const user_id = new UniqueEntityId(plainUser.id);
+    const username = new Username(plainUser.username);
     const rating = new Rating({
       id: uniqueId,
       content,
@@ -37,7 +40,8 @@ export class UpdateRating {
       movie_id: new UniqueEntityId(plainRating.movie_id),
       user: new User({
         ...plainUser,
-        id: new UniqueEntityId(plainRating.user_id),
+        id: user_id,
+        username,
       }),
     });
 

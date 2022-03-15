@@ -8,6 +8,7 @@ import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { CreateRatingInput } from '../dto/create-rating.input';
 import { RatingRepository } from '../infra/rating.repository';
 import { User } from '@/domains/user/entities/user';
+import Username from '@/@seedwork/entities/username';
 
 @Injectable()
 export class CreateRating {
@@ -26,7 +27,8 @@ export class CreateRating {
 
     const movie_id = new UniqueEntityId(dto.movie_id);
     const user_id = new UniqueEntityId(plainUser.id);
-    const user = new User({ ...plainUser, id: user_id });
+    const username = new Username(plainUser.username);
+    const user = new User({ ...plainUser, id: user_id, username });
     const value = dto.value;
     const content = new Description(dto.content);
     const rating = new Rating({ content, value, movie_id, user });

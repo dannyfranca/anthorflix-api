@@ -9,6 +9,7 @@ import RequiredDescription from '@/@seedwork/entities/required-description';
 import { CreateCommentInput } from '../dto/create-comment.input';
 import { CommentRepository } from '../infra/comment.repository';
 import { Comment } from '../entities/comment';
+import Username from '@/@seedwork/entities/username';
 
 @Injectable()
 export class CreateComment {
@@ -27,7 +28,8 @@ export class CreateComment {
 
     const rating_id = new UniqueEntityId(dto.rating_id);
     const user_id = new UniqueEntityId(plainUser.id);
-    const user = new User({ ...plainUser, id: user_id });
+    const username = new Username(plainUser.username);
+    const user = new User({ ...plainUser, id: user_id, username });
     const content = new RequiredDescription(dto.content);
     const comment = new Comment({ content, rating_id, user });
     return this.commentRepository.create(comment.plain);
