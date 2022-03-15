@@ -10,6 +10,7 @@ import { CastMemberModule } from './domains/cast-members/cast-member.module';
 import { RatingModule } from './domains/rating/rating.module';
 import { CommentModule } from './domains/comment/comment.module';
 import { MovieModule } from './domains/movie/movie.module';
+import { UserModule } from './domains/user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MovieModule } from './domains/movie/movie.module';
     GenreModule,
     MovieModule,
     RatingModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
