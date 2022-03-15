@@ -14,6 +14,9 @@ export class RatingObjectType extends EntityObject implements PlainRating {
   @Field(() => ID, { nullable: false })
   movie_id: string;
 
+  @Field(() => ID, { nullable: false })
+  user_id: string;
+
   @Field(() => UserObjectType, { nullable: false })
   user: UserObjectType;
 }
