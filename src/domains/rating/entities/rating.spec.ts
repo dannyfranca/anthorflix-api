@@ -23,6 +23,7 @@ describe('Rating Tests', () => {
       content: null,
       user: user.plain,
       movie_id: movie_id.value,
+      user_id: user.id.value,
     } as PlainRating);
     expect(rating.created_at).toBeInstanceOf(Date);
 
@@ -39,6 +40,7 @@ describe('Rating Tests', () => {
       value: 4,
       created_at,
       movie_id: movie_id.value,
+      user_id: user.id.value,
       user: user.plain,
     } as PlainRating);
 

@@ -31,6 +31,7 @@ export interface PlainRating extends PlainEntity {
   value: number;
   content: string | null;
   movie_id: string;
+  user_id: string;
   user: PlainUser;
 }
 
@@ -55,6 +56,7 @@ export class Rating extends Entity {
       value: this.value,
       content: this.content?.value ?? null,
       user: this.user.plain,
+      user_id: this.user.id.value,
       movie_id: this.movie_id.value,
     };
   }
