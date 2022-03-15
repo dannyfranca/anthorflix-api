@@ -1,5 +1,6 @@
-import { EntityObject } from '@/@seedwork/dto/entity.object';
 import { Field, ObjectType } from '@nestjs/graphql';
+
+import { EntityObject } from '@/@seedwork/dto/entity.object';
 import { PlainUser } from '../entities/user';
 
 @ObjectType()
