@@ -14,7 +14,7 @@ import { SetOptional } from 'type-fest';
 
 interface RatingOnlyProperties {
   value: number;
-  content: Description | null;
+  content: Description;
   user: User;
   movie_id: UniqueEntityId;
 }
@@ -25,7 +25,7 @@ export interface RatingProperties
 
 export interface RatingPropertiesInput
   extends EntityPropertiesInput,
-    SetOptional<RatingOnlyProperties, 'content'> {}
+    RatingOnlyProperties {}
 
 export interface PlainRating extends PlainEntity {
   value: number;
@@ -37,7 +37,7 @@ export interface PlainRating extends PlainEntity {
 
 export class Rating extends Entity {
   private _value: number;
-  private _content: Description | null;
+  private _content: Description;
   private _user: User;
   private _movie_id: UniqueEntityId;
 
@@ -46,7 +46,7 @@ export class Rating extends Entity {
     this._value = props.value;
     this._user = props.user;
     this._movie_id = props.movie_id;
-    this._content = props.content ?? null;
+    this._content = props.content;
     this.validate();
   }
 

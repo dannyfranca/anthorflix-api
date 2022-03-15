@@ -11,5 +11,5 @@ export class UpdateRatingDataInput {
   value?: number;
 
   @Field(() => String, { nullable: true })
-  content?: string;
+  content?: string | null;
 }
