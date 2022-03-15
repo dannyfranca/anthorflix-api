@@ -4,6 +4,7 @@ import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { PlainGenre } from '../entities/genre';
 import { GenreRepository } from './genre.repository';
 import { omit } from 'lodash';
+import { longRunJestTimeout } from '@/@seedwork/config';
 
 describe('GenreRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -12,7 +13,7 @@ describe('GenreRepository', () => {
   beforeEach(async () => {
     await prismaTestController.init();
     genreRepository = new GenreRepository(prismaTestController.prisma);
-  });
+  }, longRunJestTimeout);
 
   afterEach(async () => {
     await prismaTestController.destroy();

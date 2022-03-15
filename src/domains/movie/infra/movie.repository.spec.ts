@@ -4,6 +4,7 @@ import { PrismaTestController } from '@/@seedwork/infra/prisma-test-controller';
 import { PlainMovie } from '../entities/movie';
 import { MovieRepository } from './movie.repository';
 import { makeRandomPlainMovie } from '../utils';
+import { longRunJestTimeout } from '@/@seedwork/config';
 
 describe('MovieRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -12,7 +13,7 @@ describe('MovieRepository', () => {
   beforeEach(async () => {
     await prismaTestController.init();
     movieRepository = new MovieRepository(prismaTestController.prisma);
-  });
+  }, longRunJestTimeout);
 
   afterEach(async () => {
     await prismaTestController.destroy();

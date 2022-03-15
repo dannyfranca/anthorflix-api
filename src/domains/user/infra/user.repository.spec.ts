@@ -4,6 +4,7 @@ import { PrismaTestController } from '@/@seedwork/infra/prisma-test-controller';
 import { PlainUser } from '../entities/user';
 import { UserRepository } from './user.repository';
 import { makeRandomPlainUser } from '../utils';
+import { longRunJestTimeout } from '@/@seedwork/config';
 
 describe('UserRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -12,7 +13,7 @@ describe('UserRepository', () => {
   beforeEach(async () => {
     await prismaTestController.init();
     userRepository = new UserRepository(prismaTestController.prisma);
-  });
+  }, longRunJestTimeout);
 
   afterEach(async () => {
     await prismaTestController.destroy();

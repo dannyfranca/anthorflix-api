@@ -5,6 +5,7 @@ import { now } from '@/@seedwork/utils/date';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { PlainCastMember } from '../entities/cast-member';
 import { CastMemberRepository } from './cast-member.repository';
+import { longRunJestTimeout } from '@/@seedwork/config';
 
 describe('CastMemberRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -15,7 +16,7 @@ describe('CastMemberRepository', () => {
     castMemberRepository = new CastMemberRepository(
       prismaTestController.prisma,
     );
-  });
+  }, longRunJestTimeout);
 
   afterEach(async () => {
     await prismaTestController.destroy();

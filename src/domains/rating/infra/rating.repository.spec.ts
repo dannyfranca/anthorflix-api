@@ -7,6 +7,7 @@ import { makeRandomPlainRating } from '../utils';
 import { MovieRepository } from '@/domains/movie/infra/movie.repository';
 import { makeRandomPlainMovie } from '@/domains/movie/utils';
 import { UserRepository } from '@/domains/user/infra/user.repository';
+import { longRunJestTimeout } from '@/@seedwork/config';
 
 describe('RatingRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -30,7 +31,7 @@ describe('RatingRepository', () => {
     userRepository = new UserRepository(prismaTestController.prisma);
     plainRating = makeRandomPlainRating();
     await createMovieAndUser(plainRating);
-  });
+  }, longRunJestTimeout);
 
   afterEach(async () => {
     await prismaTestController.destroy();
