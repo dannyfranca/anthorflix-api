@@ -18,7 +18,7 @@ describe('UserRepository', () => {
     await prismaTestController.destroy();
   });
 
-  it('should create, update and delete', async () => {
+  it('should create and delete', async () => {
     let newPlainUser: PlainUser;
     const plainUser: PlainUser = makeRandomPlainUser();
     newPlainUser = { ...plainUser };
