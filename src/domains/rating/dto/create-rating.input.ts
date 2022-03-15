@@ -5,8 +5,8 @@ export class CreateRatingInput {
   @Field(() => Int, { nullable: false })
   value: number;
 
-  @Field(() => String, { nullable: false })
-  content: string;
+  @Field(() => String, { nullable: true })
+  content?: string;
 
   @Field(() => ID, { nullable: false })
   movie_id: string;

@@ -2,6 +2,10 @@ import { Chance } from 'chance';
 
 const chance = new Chance();
 
+export const randomInt = (opt?: { min: number; max: number }) =>
+  chance.integer(opt);
+export const randomUsername = () =>
+  chance.sentence({ words: 1, punctuation: false });
 export const randomName = () => chance.sentence({ words: 2 });
 export const randomDesc = () => chance.sentence({ words: 10 });
 export const randomYear = () => chance.integer({ min: 1960, max: 2020 });
