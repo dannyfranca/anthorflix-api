@@ -111,4 +111,12 @@ describe('Rating Tests', () => {
     expect(() => new Rating({ value: 3.5, user, movie_id }));
     expect(() => new Rating({ value: -1, user, movie_id }));
   });
+
+  it('should change value', () => {
+    const user = generateUser();
+    const movie_id = generateUniqueId();
+    expect(() => new Rating({ value: 1, user, movie_id }).changeValue(12));
+    expect(() => new Rating({ value: 2, user, movie_id }).changeValue(4.5));
+    expect(() => new Rating({ value: 3, user, movie_id }).changeValue(-2));
+  });
 });

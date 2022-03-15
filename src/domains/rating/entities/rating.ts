@@ -77,6 +77,11 @@ export class Rating extends Entity {
     return this._movie_id;
   }
 
+  changeValue(value: number) {
+    this._value = value;
+    this.validate();
+  }
+
   validate() {
     if (!Rating.isValidMargin(this.value) || !Rating.isInteger(this.value))
       throw new InvalidRatingError();
