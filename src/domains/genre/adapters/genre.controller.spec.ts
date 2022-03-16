@@ -14,6 +14,12 @@ import { ListGenre } from '../usecases/list-genre';
 import { PlainGenre } from '../entities/genre';
 import InvalidUuidError from '@/@seedwork/errors/invalid-uuid.error';
 import NotFoundError from '@/@seedwork/errors/not-found.error';
+import { FindGenre } from '../usecases/find-genre';
+import {
+  makeBadRequestMessage,
+  makeNotFoundMessage,
+} from '@/@seedwork/utils/messages';
+import { assertRequest } from '@/@seedwork/utils/supertest';
 
 const setupApp = async (fn: (module: TestingModuleBuilder) => any) => {
   const moduleBuilder = Test.createTestingModule({
@@ -45,6 +51,41 @@ const plainGenreToHttpBody = (plainGenre: PlainGenre) => {
 };
 
 describe('Genres Controller', () => {
+  it(`should find genre`, async () => {
+    const plainGenre = makePlainGenre();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef
+        .overrideProvider(FindGenre)
+        .useValue({ execute: async () => plainGenre }),
+    );
+
+    const body = await assertRequest(app)('get')('/genres/' + plainGenre.id)(
+      200,
+    );
+
+    expect(body).toMatchObject(plainGenreToHttpBody(plainGenre));
+  });
+
+  it(`should throw when not find genre`, async () => {
+    const plainGenre = makePlainGenre();
+    const notFoundError = new NotFoundError();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef.overrideProvider(FindGenre).useValue({
+        execute: async () => {
+          throw notFoundError;
+        },
+      }),
+    );
+
+    const body = await assertRequest(app)('get')('/genres/' + plainGenre.id)(
+      404,
+    );
+
+    expect(body).toMatchObject(makeNotFoundMessage(notFoundError.message));
+  });
+
   it(`should create genres`, async () => {
     const plainGenre = makePlainGenre();
 
@@ -54,15 +95,12 @@ describe('Genres Controller', () => {
         .useValue({ execute: async () => plainGenre }),
     );
 
-    const body = await request(app.getHttpServer())
-      .post('/genres')
-      .expect(201)
-      .then(({ body }) => body);
+    const body = await assertRequest(app)('post')('/genres')(201);
 
     expect(body).toMatchObject(plainGenreToHttpBody(plainGenre));
   });
 
-  it(`should throw BadRequestException`, async () => {
+  it(`should throw BadRequestException on create`, async () => {
     const invalidError = new InvalidNameError();
 
     const app = await setupApp((moduleRef) =>
@@ -73,33 +111,9 @@ describe('Genres Controller', () => {
       }),
     );
 
-    const body = await request(app.getHttpServer())
-      .post('/genres')
-      .expect(400)
-      .then(({ body }) => body);
-    Error;
-    expect(body).toStrictEqual({
-      message: invalidError.message,
-      error: 'Bad Request',
-      statusCode: 400,
-    });
-  });
+    const body = await assertRequest(app)('post')('/genres')(400);
 
-  it(`should delete genres`, async () => {
-    const plainGenre = makePlainGenre();
-
-    const app = await setupApp((moduleRef) =>
-      moduleRef
-        .overrideProvider(DeleteGenre)
-        .useValue({ execute: async () => plainGenre }),
-    );
-
-    const body = await request(app.getHttpServer())
-      .delete('/genres/' + plainGenre.id)
-      .expect(200)
-      .then(({ body }) => body);
-
-    expect(body).toMatchObject(plainGenreToHttpBody(plainGenre));
+    expect(body).toStrictEqual(makeBadRequestMessage(invalidError.message));
   });
 
   it(`should throw BadRequestException`, async () => {
@@ -113,16 +127,25 @@ describe('Genres Controller', () => {
       }),
     );
 
-    const body = await request(app.getHttpServer())
-      .delete('/genres/abc')
-      .expect(400)
-      .then(({ body }) => body);
-    Error;
-    expect(body).toStrictEqual({
-      message: invalidError.message,
-      error: 'Bad Request',
-      statusCode: 400,
-    });
+    const body = await assertRequest(app)('delete')('/genres/abc')(400);
+
+    expect(body).toStrictEqual(makeBadRequestMessage(invalidError.message));
+  });
+
+  it(`should delete genres`, async () => {
+    const plainGenre = makePlainGenre();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef
+        .overrideProvider(DeleteGenre)
+        .useValue({ execute: async () => plainGenre }),
+    );
+
+    const body = await assertRequest(app)('delete')('/genres/' + plainGenre.id)(
+      200,
+    );
+
+    expect(body).toMatchObject(plainGenreToHttpBody(plainGenre));
   });
 
   it(`should update genres`, async () => {
@@ -134,10 +157,9 @@ describe('Genres Controller', () => {
         .useValue({ execute: async () => plainGenre }),
     );
 
-    const body = await request(app.getHttpServer())
-      .put('/genres/' + plainGenre.id)
-      .expect(200)
-      .then(({ body }) => body);
+    const body = await assertRequest(app)('put')('/genres/' + plainGenre.id)(
+      200,
+    );
 
     expect(body).toMatchObject(plainGenreToHttpBody(plainGenre));
   });
@@ -153,16 +175,9 @@ describe('Genres Controller', () => {
       }),
     );
 
-    const body = await request(app.getHttpServer())
-      .put('/genres/abc')
-      .expect(404)
-      .then(({ body }) => body);
-    Error;
-    expect(body).toStrictEqual({
-      message: invalidError.message,
-      error: 'Not Found',
-      statusCode: 404,
-    });
+    const body = await assertRequest(app)('put')('/genres/abc')(404);
+
+    expect(body).toStrictEqual(makeNotFoundMessage(invalidError.message));
   });
 
   it(`should list genres`, async () => {
@@ -174,10 +189,7 @@ describe('Genres Controller', () => {
         .useValue({ execute: async () => [plainGenre, plainGenre] }),
     );
 
-    const body = await request(app.getHttpServer())
-      .get('/genres')
-      .expect(200)
-      .then(({ body }) => body);
+    const body = await assertRequest(app)('get')('/genres')(200);
 
     expect(body).toMatchObject([
       plainGenreToHttpBody(plainGenre),

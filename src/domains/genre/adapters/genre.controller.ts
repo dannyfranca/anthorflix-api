@@ -16,11 +16,13 @@ import { CreateGenre } from '../usecases/create-genre';
 import { DeleteGenre } from '../usecases/delete-genre';
 import { ListGenre } from '../usecases/list-genre';
 import { UpdateGenre } from '../usecases/update-genre';
+import { FindGenre } from '../usecases/find-genre';
 
 @UseInterceptors(ErrorsInterceptor)
 @Controller('genres')
 export class GenreController {
   constructor(
+    private readonly findGenreUseCase: FindGenre,
     private readonly listGenreUseCase: ListGenre,
     private readonly createGenreUseCase: CreateGenre,
     private readonly updateGenreUseCase: UpdateGenre,
@@ -35,6 +37,11 @@ export class GenreController {
   @Post()
   async createGenre(@Body() data: CreateGenreInput) {
     return this.createGenreUseCase.execute(data);
+  }
+
+  @Get(':id')
+  async findGenre(@Param('id') id: string) {
+    return this.findGenreUseCase.execute(id);
   }
 
   @Put(':id')
