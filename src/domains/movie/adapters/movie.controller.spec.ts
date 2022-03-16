@@ -1,8 +1,6 @@
 import * as request from 'supertest';
 import { Test, TestingModuleBuilder } from '@nestjs/testing';
 
-import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
-import { now } from '@/@seedwork/utils/date';
 import { PrismaService } from '@/@seedwork/infra/prisma.service';
 import { GlobalModule } from '@/@seedwork/global.module';
 import InvalidNameError from '@/@seedwork/errors/invalid-name.error';
@@ -15,6 +13,9 @@ import { PlainMovie } from '../entities/movie';
 import InvalidUuidError from '@/@seedwork/errors/invalid-uuid.error';
 import NotFoundError from '@/@seedwork/errors/not-found.error';
 import { makeRandomPlainMovie } from '../utils';
+import { assertRequest } from '@/@seedwork/utils/supertest';
+import { makeNotFoundMessage } from '@/@seedwork/utils/messages';
+import { FindMovie } from '../usecases/find-movie';
 
 const setupApp = async (fn: (module: TestingModuleBuilder) => any) => {
   const moduleBuilder = Test.createTestingModule({
@@ -36,6 +37,41 @@ const plainMovieToHttpBody = (plainMovie: PlainMovie) => {
 };
 
 describe('Movies Controller', () => {
+  it(`should find movie`, async () => {
+    const plainMovie = makeRandomPlainMovie();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef
+        .overrideProvider(FindMovie)
+        .useValue({ execute: async () => plainMovie }),
+    );
+
+    const body = await assertRequest(app)('get')('/movies/' + plainMovie.id)(
+      200,
+    );
+
+    expect(body).toMatchObject(plainMovieToHttpBody(plainMovie));
+  });
+
+  it(`should throw when not find movie`, async () => {
+    const plainMovie = makeRandomPlainMovie();
+    const notFoundError = new NotFoundError();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef.overrideProvider(FindMovie).useValue({
+        execute: async () => {
+          throw notFoundError;
+        },
+      }),
+    );
+
+    const body = await assertRequest(app)('get')('/movies/' + plainMovie.id)(
+      404,
+    );
+
+    expect(body).toMatchObject(makeNotFoundMessage(notFoundError.message));
+  });
+
   it(`should create movies`, async () => {
     const plainMovie = makeRandomPlainMovie();
 

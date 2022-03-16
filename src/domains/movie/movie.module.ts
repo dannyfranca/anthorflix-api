@@ -7,6 +7,7 @@ import { CreateMovie } from './usecases/create-movie';
 import { ListMovie } from './usecases/list-movie';
 import { UpdateMovie } from './usecases/update-movie';
 import { DeleteMovie } from './usecases/delete-movie';
+import { FindMovie } from './usecases/find-movie';
 
 @Module({
   imports: [],
@@ -14,6 +15,7 @@ import { DeleteMovie } from './usecases/delete-movie';
   providers: [
     MovieResolver,
     MovieRepository,
+    FindMovie,
     ListMovie,
     CreateMovie,
     UpdateMovie,
