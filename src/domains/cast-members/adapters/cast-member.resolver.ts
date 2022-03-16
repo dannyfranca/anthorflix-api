@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseInterceptors } from '@nestjs/common';
 
-import { UniqueIdInput } from '@/@seedwork/dto/unique-id.input';
+import { UniqueIdArgs, UniqueIdInput } from '@/@seedwork/dto/unique-id.input';
 import { ErrorsInterceptor } from '@/@seedwork/errors/error.interceptor';
 import { CreateCastMemberInput } from '../dto/create-cast-member.input';
 import { CastMemberObjectType } from '../dto/cast-member.object';
@@ -13,16 +13,23 @@ import { CreateCastMember } from '../usecases/create-cast-member';
 import { DeleteCastMember } from '../usecases/delete-cast-member';
 import { ListCastMember } from '../usecases/list-cast-member';
 import { UpdateCastMember } from '../usecases/update-cast-member';
+import { FindCastMember } from '../usecases/find-cast-member';
 
 @UseInterceptors(ErrorsInterceptor)
 @Resolver(() => CastMemberObjectType)
 export class CastMemberResolver {
   constructor(
+    private readonly findCastMemberUseCase: FindCastMember,
     private readonly listCastMemberUseCase: ListCastMember,
     private readonly createCastMemberUseCase: CreateCastMember,
     private readonly updateCastMemberUseCase: UpdateCastMember,
     private readonly deleteCastMemberUseCase: DeleteCastMember,
   ) {}
+
+  @Query(() => CastMemberObjectType)
+  async findGenre(@Args() input: UniqueIdArgs) {
+    return this.findCastMemberUseCase.execute(input.id);
+  }
 
   @Query(() => [CastMemberObjectType])
   async listCastMembers() {

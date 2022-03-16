@@ -14,6 +14,10 @@ import { ListCastMember } from '../usecases/list-cast-member';
 import { PlainCastMember } from '../entities/cast-member';
 import InvalidUuidError from '@/@seedwork/errors/invalid-uuid.error';
 import NotFoundError from '@/@seedwork/errors/not-found.error';
+import { FindCastMember } from '../usecases/find-cast-member';
+import { assertRequest } from '@/@seedwork/utils/supertest';
+import { makeNotFoundMessage } from '@/@seedwork/utils/messages';
+import { makeRandomPlainCastMember } from '../utils';
 
 const setupApp = async (fn: (module: TestingModuleBuilder) => any) => {
   const moduleBuilder = Test.createTestingModule({
@@ -29,24 +33,49 @@ const setupApp = async (fn: (module: TestingModuleBuilder) => any) => {
   return app;
 };
 
-const makePlainCastMember = (): PlainCastMember => {
-  const uniqueId = new UniqueEntityId();
-  return {
-    id: uniqueId.value,
-    name: 'Some Name',
-    created_at: now(),
-    deleted_at: null,
-  };
-};
-
 const plainCastMemberToHttpBody = (plainCastMember: PlainCastMember) => {
   const { id, name, created_at } = plainCastMember;
   return { id, name, created_at: created_at.toISOString() };
 };
 
 describe('Cast members Controller', () => {
+  it(`should find genre`, async () => {
+    const plainCastMember = makeRandomPlainCastMember();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef
+        .overrideProvider(FindCastMember)
+        .useValue({ execute: async () => plainCastMember }),
+    );
+
+    const body = await assertRequest(app)('get')(
+      '/cast_members/' + plainCastMember.id,
+    )(200);
+
+    expect(body).toMatchObject(plainCastMemberToHttpBody(plainCastMember));
+  });
+
+  it(`should throw when not find genre`, async () => {
+    const plainCastMember = makeRandomPlainCastMember();
+    const notFoundError = new NotFoundError();
+
+    const app = await setupApp((moduleRef) =>
+      moduleRef.overrideProvider(FindCastMember).useValue({
+        execute: async () => {
+          throw notFoundError;
+        },
+      }),
+    );
+
+    const body = await assertRequest(app)('get')(
+      '/cast_members/' + plainCastMember.id,
+    )(404);
+
+    expect(body).toMatchObject(makeNotFoundMessage(notFoundError.message));
+  });
+
   it(`should create cast members`, async () => {
-    const plainCastMember = makePlainCastMember();
+    const plainCastMember = makeRandomPlainCastMember();
 
     const app = await setupApp((moduleRef) =>
       moduleRef
@@ -86,7 +115,7 @@ describe('Cast members Controller', () => {
   });
 
   it(`should delete castMembers`, async () => {
-    const plainCastMember = makePlainCastMember();
+    const plainCastMember = makeRandomPlainCastMember();
 
     const app = await setupApp((moduleRef) =>
       moduleRef
@@ -126,7 +155,7 @@ describe('Cast members Controller', () => {
   });
 
   it(`should update castMembers`, async () => {
-    const plainCastMember = makePlainCastMember();
+    const plainCastMember = makeRandomPlainCastMember();
 
     const app = await setupApp((moduleRef) =>
       moduleRef
@@ -166,7 +195,7 @@ describe('Cast members Controller', () => {
   });
 
   it(`should list castMembers`, async () => {
-    const plainCastMember = makePlainCastMember();
+    const plainCastMember = makeRandomPlainCastMember();
 
     const app = await setupApp((moduleRef) =>
       moduleRef

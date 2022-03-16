@@ -16,11 +16,13 @@ import { CreateCastMember } from '../usecases/create-cast-member';
 import { DeleteCastMember } from '../usecases/delete-cast-member';
 import { ListCastMember } from '../usecases/list-cast-member';
 import { UpdateCastMember } from '../usecases/update-cast-member';
+import { FindCastMember } from '../usecases/find-cast-member';
 
 @UseInterceptors(ErrorsInterceptor)
 @Controller('cast_members')
 export class CastMemberController {
   constructor(
+    private readonly findGenreUseCase: FindCastMember,
     private readonly listCastMemberUseCase: ListCastMember,
     private readonly createCastMemberUseCase: CreateCastMember,
     private readonly updateCastMemberUseCase: UpdateCastMember,
@@ -30,6 +32,11 @@ export class CastMemberController {
   @Get()
   async listCastMembers() {
     return this.listCastMemberUseCase.execute();
+  }
+
+  @Get(':id')
+  async findGenre(@Param('id') id: string) {
+    return this.findGenreUseCase.execute(id);
   }
 
   @Post()

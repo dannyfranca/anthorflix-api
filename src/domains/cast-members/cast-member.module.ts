@@ -7,6 +7,7 @@ import { CreateCastMember } from './usecases/create-cast-member';
 import { ListCastMember } from './usecases/list-cast-member';
 import { UpdateCastMember } from './usecases/update-cast-member';
 import { DeleteCastMember } from './usecases/delete-cast-member';
+import { FindCastMember } from './usecases/find-cast-member';
 
 @Module({
   imports: [],
@@ -14,6 +15,7 @@ import { DeleteCastMember } from './usecases/delete-cast-member';
   providers: [
     CastMemberResolver,
     CastMemberRepository,
+    FindCastMember,
     ListCastMember,
     CreateCastMember,
     UpdateCastMember,
