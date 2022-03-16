@@ -27,7 +27,6 @@ describe('CastMemberRepository', () => {
     const plainCastMember: PlainCastMember = {
       id: uniqueId.value,
       name: 'Some Name',
-      // type: CastMemberType.ACTOR,
       created_at: now(),
       deleted_at: null,
     };
