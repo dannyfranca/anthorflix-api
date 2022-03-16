@@ -3,12 +3,17 @@ version: '3.9'
 services:
   anthorflix-api:
     image: 'dannyfranca/anthorflix-api'
-    container_name: anthorflix-front
-    hostname: anthorflix-front
+    container_name: anthorflix-api
+    hostname: anthorflix-api
     restart: on-failure
     pull_policy: if_not_present
+    build:
+      context: .
+      target: runtime
     depends_on:
       - postgres
+    ports:
+      - '4000:80'
     environment:
       - NODE_ENV=production
       - PORT=80
