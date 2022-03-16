@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  anthorflix-api:
+    image: 'dannyfranca/anthorflix-api'
+    container_name: anthorflix-front
+    hostname: anthorflix-front
+    restart: on-failure
+    pull_policy: if_not_present
+    depends_on:
+      - postgres
+    environment:
+      - NODE_ENV=production
+      - PORT=80
+      - DATABASE_URL=postgresql://docker:docker@postgres:5432/anthorflix?schema=public
+    networks:
+      - app-net
+
+  postgres:
+    image: 'bitnami/postgresql'
+    container_name: postgres
+    hostname: postgres
+    restart: always
+    expose:
+      - '5432'
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=anthorflix
+    volumes:
+      - 'postgresql:/bitnami/postgresql'
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  postgresql:
