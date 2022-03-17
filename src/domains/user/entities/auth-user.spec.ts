@@ -29,6 +29,11 @@ describe('User Tests', () => {
       username: username.value,
       created_at,
     } as PlainUser);
+    expect(user.plain).not.toMatchObject({
+      username: username.value,
+      password: password.hash,
+      created_at,
+    });
 
     created_at = new Date();
     const anotherUser = randomUsername();
