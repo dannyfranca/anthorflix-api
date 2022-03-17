@@ -6,7 +6,6 @@ services:
     container_name: anthorflix-api
     hostname: anthorflix-api
     restart: on-failure
-    pull_policy: if_not_present
     build:
       context: .
       target: runtime
