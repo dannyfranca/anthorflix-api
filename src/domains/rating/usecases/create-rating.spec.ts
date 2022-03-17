@@ -3,7 +3,7 @@ import InvalidDescriptionError from '@/@seedwork/errors/invalid-description.erro
 import { MovieRepository } from '@/domains/movie/infra/movie.repository';
 import { UserRepository } from '@/domains/user/infra/user.repository';
 import NotFoundError from '@/@seedwork/errors/not-found.error';
-import { makeRandomPlainMovie } from '@/domains/movie/utils';
+import { makeRandomMovie, makeRandomPlainMovie } from '@/domains/movie/utils';
 import { makeRandomPlainUser } from '@/domains/user/utils';
 import { PlainRating } from '../entities/rating';
 import { CreateRating } from './create-rating';
@@ -33,7 +33,7 @@ describe('Create rating use case', () => {
   it('should create', async () => {
     jest
       .spyOn(movieRepository, 'find')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => makeRandomMovie());
     jest
       .spyOn(userRepository, 'find')
       .mockImplementation(async () => makeRandomPlainUser());
@@ -47,7 +47,7 @@ describe('Create rating use case', () => {
   it('should throw Invalid Errors', () => {
     jest
       .spyOn(movieRepository, 'find')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => makeRandomMovie());
     jest
       .spyOn(userRepository, 'find')
       .mockImplementation(async () => makeRandomPlainUser());
@@ -71,7 +71,7 @@ describe('Create rating use case', () => {
   it('should throw NotFoundError when user does not exist', () => {
     jest
       .spyOn(movieRepository, 'find')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => makeRandomMovie());
     jest.spyOn(userRepository, 'find').mockImplementation(async () => null);
 
     expect(() =>

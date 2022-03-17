@@ -11,8 +11,8 @@ import {
 import { Movie, PlainMovie } from './entities/movie';
 import { Thumb } from './entities/thumb';
 
-export const makeRandomMovie = (): Movie => {
-  const uniqueId = new UniqueEntityId();
+export const makeRandomMovie = ({ id }: { id?: string } = {}): Movie => {
+  const uniqueId = new UniqueEntityId(id);
   return new Movie({
     id: uniqueId,
     title: new Name(randomName()),

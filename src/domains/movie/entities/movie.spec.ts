@@ -93,6 +93,6 @@ describe('Movie Tests', () => {
   it('should change thumb', () => {
     const movie = new Movie(generateMoviePropsWithThumb());
     movie.changeThumb(new Thumb({ url: new Url('domain.com') }));
-    expect(movie.thumb?.url).toBe('domain.com');
+    expect(movie.thumb?.url.value).toBe('domain.com');
   });
 });

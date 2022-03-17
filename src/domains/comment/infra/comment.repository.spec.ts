@@ -3,7 +3,7 @@ import { omit } from 'lodash';
 import { PrismaTestController } from '@/@seedwork/infra/prisma-test-controller';
 import { longRunJestTimeout } from '@/@seedwork/config';
 import { MovieRepository } from '@/domains/movie/infra/movie.repository';
-import { makeRandomPlainMovie } from '@/domains/movie/utils';
+import { makeRandomMovie, makeRandomPlainMovie } from '@/domains/movie/utils';
 import { UserRepository } from '@/domains/user/infra/user.repository';
 import { RatingRepository } from '@/domains/rating/infra/rating.repository';
 import { makeRandomPlainRating } from '@/domains/rating/utils';
@@ -25,10 +25,8 @@ describe('CommentRepository', () => {
 
     await userRepository.create(plainComment.user);
     await userRepository.create(plainRating.user);
-    await movieRepository.create({
-      ...makeRandomPlainMovie(),
-      id: plainRating.movie_id,
-    });
+    const movie = makeRandomMovie({ id: plainRating.movie_id });
+    await movieRepository.create(movie);
     await ratingRepository.create(plainRating);
   };
 
