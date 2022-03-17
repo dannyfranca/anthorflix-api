@@ -6,7 +6,6 @@ import {
 } from '@/@seedwork/entities/entity';
 import Name from '@/@seedwork/entities/name';
 import Description from '@/@seedwork/entities/description';
-import InvalidDescriptionError from '@/@seedwork/errors/invalid-description.error';
 
 export interface MovieProperties extends EntityProperties {
   title: Name;
