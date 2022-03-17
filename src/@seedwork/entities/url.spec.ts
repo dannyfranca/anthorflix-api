@@ -13,12 +13,12 @@ describe('URL tests', () => {
     expect(url.value).toBe('www.domain.com.br');
   });
 
-  it('should throw InvalidUsernameError error on URL change', () => {
+  it('should throw InvalidUrlError error on URL change', () => {
     const url = new Url('http://domain.com.br');
     expect(() => url.change('url.c')).toThrowError(InvalidUrlError);
   });
 
-  it('should throw InvalidUsernameError error', () => {
+  it('should throw InvalidUrlError error', () => {
     expect(() => new Url('url')).toThrowError(InvalidUrlError);
     expect(() => new Url('url.c')).toThrowError(InvalidUrlError);
   });
