@@ -7,6 +7,17 @@ describe('URL tests', () => {
     expect(new Url('www.domain.com.br').value).toBe('www.domain.com.br');
   });
 
+  it('should accept URL change', () => {
+    const url = new Url('http://domain.com.br');
+    url.change('www.domain.com.br');
+    expect(url.value).toBe('www.domain.com.br');
+  });
+
+  it('should throw InvalidUsernameError error on URL change', () => {
+    const url = new Url('http://domain.com.br');
+    expect(() => url.change('url.c')).toThrowError(InvalidUrlError);
+  });
+
   it('should throw InvalidUsernameError error', () => {
     expect(() => new Url('url')).toThrowError(InvalidUrlError);
     expect(() => new Url('url.c')).toThrowError(InvalidUrlError);
