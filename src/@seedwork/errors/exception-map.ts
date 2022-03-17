@@ -28,6 +28,7 @@ const exceptionMap: {
   NotFoundError: NotFoundException,
   AlreadyExistsError: ConflictException,
   InvalidNameError: BadRequestException,
+  InvalidUrlError: BadRequestException,
   InvalidUsernameError: BadRequestException,
   InvalidDescriptionError: BadRequestException,
   InvalidUuidError: BadRequestException,

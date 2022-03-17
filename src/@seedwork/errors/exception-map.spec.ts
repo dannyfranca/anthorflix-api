@@ -11,6 +11,7 @@ import InvalidDescriptionError from './invalid-description.error';
 import InvalidNameError from './invalid-name.error';
 import InvalidUuidError from './invalid-uuid.error';
 import NotFoundError from './not-found.error';
+import InvalidUrlError from './invalid-url.error';
 
 describe('Exception map tests', () => {
   test('match exceptions', () => {
@@ -21,6 +22,9 @@ describe('Exception map tests', () => {
       NotFoundException,
     );
     expect(resolveException(new InvalidNameError())).toBeInstanceOf(
+      BadRequestException,
+    );
+    expect(resolveException(new InvalidUrlError())).toBeInstanceOf(
       BadRequestException,
     );
     expect(resolveException(new InvalidDescriptionError())).toBeInstanceOf(
