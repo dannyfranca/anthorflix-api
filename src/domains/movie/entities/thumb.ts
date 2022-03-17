@@ -1,38 +1,16 @@
-import {
-  Entity,
-  EntityProperties,
-  EntityPropertiesInput,
-  PlainEntity,
-} from '@/@seedwork/entities/entity';
-import Name from '@/@seedwork/entities/name';
-import Description from '@/@seedwork/entities/description';
 import Url from '@/@seedwork/entities/url';
 
-export interface ThumbProperties extends EntityProperties {
+export interface ThumbProperties {
   url: Url;
 }
 
-export interface ThumbPropertiesInput
-  extends EntityPropertiesInput,
-    Pick<ThumbProperties, 'url'> {}
+export type ThumbPropertiesInput = Pick<ThumbProperties, 'url'>;
 
-export interface PlainThumb extends PlainEntity {
-  url: string;
-}
-
-export class Thumb extends Entity {
+export class Thumb {
   private _url: Url;
 
   constructor(props: ThumbPropertiesInput) {
-    super(props);
     this._url = props.url;
-  }
-
-  get plain(): PlainThumb {
-    return {
-      ...super.plain,
-      url: this.url.value,
-    };
   }
 
   get url() {
