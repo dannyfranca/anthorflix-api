@@ -9,7 +9,12 @@ export interface AuthUserPropertiesInput
   extends UserPropertiesInput,
     Pick<AuthUserProperties, 'password'> {}
 
-export type PlainAuthUser = PlainUser;
+export interface PlainAuthUser extends PlainUser {
+  password: {
+    hash: string;
+    salt: string;
+  };
+}
 
 export class AuthUser extends User {
   private _password: Password;
@@ -20,7 +25,13 @@ export class AuthUser extends User {
   }
 
   get plain(): PlainAuthUser {
-    return super.plain;
+    return {
+      ...super.plain,
+      password: {
+        hash: this.password.hash,
+        salt: this.password.salt,
+      },
+    };
   }
 
   get password() {

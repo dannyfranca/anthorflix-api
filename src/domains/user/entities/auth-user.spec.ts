@@ -1,7 +1,7 @@
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import Username from '@/@seedwork/entities/username';
 import { randomPassword, randomUsername } from '@/@seedwork/utils/mock';
-import { AuthUser } from './auth-user';
+import { AuthUser, PlainAuthUser } from './auth-user';
 import Password from './password';
 import { PlainUser } from './user';
 
@@ -16,7 +16,11 @@ describe('User Tests', () => {
 
     expect(user.plain).toMatchObject({
       username: username.value,
-    } as PlainUser);
+      password: {
+        hash: password.hash,
+        salt: password.salt,
+      },
+    } as PlainAuthUser);
     expect(user.created_at).toBeInstanceOf(Date);
 
     created_at = new Date();
@@ -27,26 +31,29 @@ describe('User Tests', () => {
     });
     expect(user.plain).toMatchObject({
       username: username.value,
+      password: {
+        hash: password.hash,
+        salt: password.salt,
+      },
       created_at,
-    } as PlainUser);
-    expect(user.plain).not.toMatchObject({
-      username: username.value,
-      password: password.hash,
-      created_at,
-    });
+    } as PlainAuthUser);
 
     created_at = new Date();
-    const anotherUser = randomUsername();
-    const anotherPass = randomPassword();
+    const anotherUser = new Username(randomUsername());
+    const anotherPass = new Password(randomPassword());
     user = new AuthUser({
-      username: new Username(anotherUser),
-      password: new Password(anotherPass),
+      username: anotherUser,
+      password: anotherPass,
       created_at,
     });
     expect(user.plain).toMatchObject({
-      username: anotherUser,
+      username: anotherUser.value,
+      password: {
+        hash: anotherPass.hash,
+        salt: anotherPass.salt,
+      },
       created_at,
-    } as PlainUser);
+    } as PlainAuthUser);
   });
 
   test('user getters', () => {
