@@ -11,6 +11,6 @@ export class FindMovie {
     const uniqueId = new UniqueEntityId(id);
     const result = await this.movieRepository.find(uniqueId);
     if (!result) throw new NotFoundError('Movie not found');
-    return result;
+    return result.plain;
   }
 }

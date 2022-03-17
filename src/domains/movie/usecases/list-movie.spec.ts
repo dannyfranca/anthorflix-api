@@ -22,7 +22,7 @@ describe('List movie use case', () => {
 
     const result = await listMovie.execute();
     expect(result.length).toBe(2);
-    expect(result).toMatchObject([movie1, movie2]);
+    expect(result).toMatchObject([movie1.plain, movie2.plain]);
   });
 
   it('should list empty array', async () => {

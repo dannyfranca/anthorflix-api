@@ -20,6 +20,6 @@ export class CreateMovie {
     const year_launched = dto.year_launched;
     const movie = new Movie({ title, description, year_launched, thumb });
     await this.movieRepository.create(movie);
-    return await this.movieRepository.find(movie.id);
+    return await this.movieRepository.find(movie.id).then((v) => v?.plain);
   }
 }

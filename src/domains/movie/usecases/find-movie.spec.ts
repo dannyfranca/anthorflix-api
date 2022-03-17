@@ -23,7 +23,7 @@ describe('Find movie use case', () => {
     const movie = makeRandomMovie();
 
     const result = await findMovie.execute(movie.id.value);
-    expect(result).toStrictEqual(movie);
+    expect(result).toStrictEqual(movie.plain);
   });
 
   it('should not find movie', async () => {

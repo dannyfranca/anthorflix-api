@@ -24,7 +24,7 @@ describe('Create movie use case', () => {
     const movie = makeRandomMovie();
     const plainMovie = movie.plain;
 
-    expect(await createMovie.execute(plainMovie)).toMatchObject(movie);
+    expect(await createMovie.execute(plainMovie)).toMatchObject(plainMovie);
   });
 
   it('should throw Errors', () => {

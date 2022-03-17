@@ -6,6 +6,6 @@ export class ListMovie {
   constructor(private movieRepository: MovieRepository) {}
 
   async execute() {
-    return this.movieRepository.list();
+    return this.movieRepository.list().then((v) => v.map((e) => e.plain));
   }
 }
