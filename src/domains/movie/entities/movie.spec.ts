@@ -3,6 +3,8 @@ import { omit } from 'lodash';
 import { Movie, PlainMovie } from './movie';
 import Name from '@/@seedwork/entities/name';
 import Description from '@/@seedwork/entities/description';
+import { Thumb } from './thumb';
+import Url from '@/@seedwork/entities/url';
 
 const title = 'Movie Name';
 const description = 'Some real crazy Lorem Ipsum description';
@@ -11,6 +13,10 @@ const generateMovieProps = () => ({
   title: new Name(title),
   description: new Description(description),
   year_launched,
+});
+const generateMoviePropsWithThumb = () => ({
+  ...generateMovieProps(),
+  thumb: new Thumb({ url: new Url('domain.com') }),
 });
 
 describe('Movie Tests', () => {
@@ -36,6 +42,7 @@ describe('Movie Tests', () => {
       title,
       description,
       year_launched,
+      thumb: undefined,
       created_at,
     } as PlainMovie);
 
@@ -50,7 +57,17 @@ describe('Movie Tests', () => {
       title: 'Another Movie Name',
       description: 'Another movie description',
       year_launched: 2020,
+      thumb: undefined,
       created_at,
+    } as PlainMovie);
+
+    movie = new Movie({ ...generateMoviePropsWithThumb() });
+    expect(movie.plain).toMatchObject({
+      title: movie.title.value,
+      description: movie.description.value,
+      year_launched: movie.year_launched,
+      thumb: movie.thumb?.url.value,
+      created_at: movie.created_at,
     } as PlainMovie);
   });
 
