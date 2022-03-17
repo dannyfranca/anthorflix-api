@@ -1,11 +1,32 @@
+import Description from '@/@seedwork/entities/description';
+import Name from '@/@seedwork/entities/name';
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
+import Url from '@/@seedwork/entities/url';
 import {
   randomDate,
   randomDesc,
   randomName,
   randomYear,
 } from '@/@seedwork/utils/mock';
-import { PlainMovie } from './entities/movie';
+import { Movie, PlainMovie } from './entities/movie';
+import { Thumb } from './entities/thumb';
+
+export const makeRandomMovie = (): Movie => {
+  const uniqueId = new UniqueEntityId();
+  return new Movie({
+    id: uniqueId,
+    title: new Name(randomName()),
+    description: new Description(randomDesc()),
+    year_launched: randomYear(),
+    created_at: randomDate(),
+    deleted_at: null,
+    thumb: new Thumb({ url: new Url('domain.com') }),
+    cast_members: [],
+    directors: [],
+    genres: [],
+    general_rating: null,
+  });
+};
 
 export const makeRandomPlainMovie = (): PlainMovie => {
   const uniqueId = new UniqueEntityId();
@@ -16,5 +37,6 @@ export const makeRandomPlainMovie = (): PlainMovie => {
     year_launched: randomYear(),
     created_at: randomDate(),
     deleted_at: null,
+    general_rating: null,
   };
 };
