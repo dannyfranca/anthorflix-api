@@ -33,7 +33,11 @@ input CreateGenreInput {
 }
 
 input CreateMovieInput {
+  cast_members_ids: [ID!]
   description: String!
+  directors_ids: [ID!]
+  genres_ids: [ID!]
+  thumb: String
   title: String!
   year_launched: Int!
 }
@@ -61,10 +65,15 @@ type GenreObjectType {
 }
 
 type MovieObjectType {
+  cast_members_ids: [CastMemberObjectType!]
   created_at: DateTime!
   deleted_at: DateTime
   description: String!
+  directors_ids: [CastMemberObjectType!]
+  general_rating: Float
+  genres_ids: [GenreObjectType!]
   id: ID!
+  thumb: String
   title: String!
   year_launched: Int!
 }
@@ -73,19 +82,19 @@ type Mutation {
   createCastMember(data: CreateCastMemberInput!): CastMemberObjectType!
   createComment(data: CreateCommentInput!): CommentObjectType!
   createGenre(data: CreateGenreInput!): GenreObjectType!
-  createMovie(data: CreateMovieInput!): MovieObjectType!
+  createMovie(data: CreateMovieInput!): SuccessObject!
   createRating(data: CreateRatingInput!): RatingObjectType!
   createUser(data: CreateUserInput!): UserObjectType!
   deleteCastMember(data: UniqueIdInput!): CastMemberObjectType!
   deleteComment(data: UniqueIdInput!): CommentObjectType!
   deleteGenre(data: UniqueIdInput!): GenreObjectType!
-  deleteMovie(data: UniqueIdInput!): MovieObjectType!
+  deleteMovie(data: UniqueIdInput!): SuccessObject!
   deleteRating(data: UniqueIdInput!): RatingObjectType!
   deleteUser(data: UniqueIdInput!): UserObjectType!
   updateCastMember(data: UpdateCastMemberDataInput!, where: UpdateCastMemberWhereInput!): CastMemberObjectType!
   updateComment(data: UpdateCommentDataInput!, where: UpdateCommentWhereInput!): CommentObjectType!
   updateGenre(data: UpdateGenreDataInput!, where: UpdateGenreWhereInput!): GenreObjectType!
-  updateMovie(data: UpdateMovieDataInput!, where: UpdateMovieWhereInput!): MovieObjectType!
+  updateMovie(data: UpdateMovieDataInput!, where: UpdateMovieWhereInput!): SuccessObject!
   updateRating(data: UpdateRatingDataInput!, where: UpdateRatingWhereInput!): RatingObjectType!
 }
 
@@ -109,6 +118,10 @@ type RatingObjectType {
   user: UserObjectType!
   user_id: ID!
   value: Int!
+}
+
+type SuccessObject {
+  success: Boolean!
 }
 
 input UniqueIdInput {
@@ -140,7 +153,11 @@ input UpdateGenreWhereInput {
 }
 
 input UpdateMovieDataInput {
+  cast_members_ids: [ID!]
   description: String
+  directors_ids: [ID!]
+  genres_ids: [ID!]
+  thumb: String
   title: String
   year_launched: Int
 }

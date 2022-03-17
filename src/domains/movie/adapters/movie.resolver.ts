@@ -14,6 +14,7 @@ import { DeleteMovie } from '../usecases/delete-movie';
 import { ListMovie } from '../usecases/list-movie';
 import { UpdateMovie } from '../usecases/update-movie';
 import { FindMovie } from '../usecases/find-movie';
+import { SuccessObject } from '@/@seedwork/dto/success.object';
 
 @UseInterceptors(ErrorsInterceptor)
 @Resolver(() => MovieObjectType)
@@ -36,21 +37,27 @@ export class MovieResolver {
     return this.listMovieUseCase.execute();
   }
 
-  @Mutation(() => MovieObjectType)
+  @Mutation(() => SuccessObject)
   async createMovie(@Args('data') data: CreateMovieInput) {
-    return this.createMovieUseCase.execute(data);
+    return this.createMovieUseCase
+      .execute(data)
+      .then(() => ({ success: true }));
   }
 
-  @Mutation(() => MovieObjectType)
+  @Mutation(() => SuccessObject)
   async updateMovie(
     @Args('where') where: UpdateMovieWhereInput,
     @Args('data') data: UpdateMovieDataInput,
   ) {
-    return this.updateMovieUseCase.execute(where, data);
+    return this.updateMovieUseCase
+      .execute(where, data)
+      .then(() => ({ success: true }));
   }
 
-  @Mutation(() => MovieObjectType)
+  @Mutation(() => SuccessObject)
   async deleteMovie(@Args('data') input: UniqueIdInput) {
-    return this.deleteMovieUseCase.execute(input);
+    return this.deleteMovieUseCase
+      .execute(input)
+      .then(() => ({ success: true }));
   }
 }
