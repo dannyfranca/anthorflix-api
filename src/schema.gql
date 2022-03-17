@@ -91,6 +91,7 @@ type Mutation {
 
 type Query {
   findGenre(id: ID!): GenreObjectType!
+  findMovie(id: ID!): MovieObjectType!
   listCastMembers: [CastMemberObjectType!]!
   listComments: [CommentObjectType!]!
   listGenres: [GenreObjectType!]!
