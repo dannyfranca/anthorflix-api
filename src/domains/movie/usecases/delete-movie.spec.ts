@@ -6,7 +6,7 @@ import { MovieRepository } from '../infra/movie.repository';
 import { PrismaService } from '@/@seedwork/infra/prisma.service';
 import NotFoundError from '@/@seedwork/errors/not-found.error';
 import InvalidUuidError from '@/@seedwork/errors/invalid-uuid.error';
-import { makeRandomPlainMovie } from '../utils';
+import { makeRandomMovie } from '../utils';
 
 describe('Delete movie use case', () => {
   let deleteMovie: DeleteMovie;
@@ -19,25 +19,22 @@ describe('Delete movie use case', () => {
   });
 
   it('should delete', async () => {
-    jest
-      .spyOn(movieRepository, 'find')
-      .mockImplementation(async (id) => plainMovie);
+    jest.spyOn(movieRepository, 'find').mockImplementation(async (id) => movie);
     jest
       .spyOn(movieRepository, 'delete')
-      .mockImplementation(async () => plainMovie);
+      .mockImplementation(async () => undefined);
 
-    const plainMovie = makeRandomPlainMovie();
+    const movie = makeRandomMovie();
+    const plainMovie = movie.plain;
 
-    expect(await deleteMovie.execute({ id: plainMovie.id })).toMatchObject(
-      plainMovie,
-    );
+    expect(await deleteMovie.execute({ id: plainMovie.id })).toBeUndefined();
   });
 
   it('should throw NotFoundError', async () => {
     jest.spyOn(movieRepository, 'find').mockImplementation(async () => null);
     jest
       .spyOn(movieRepository, 'delete')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => undefined);
 
     const uniqueId = new UniqueEntityId();
 
@@ -50,7 +47,7 @@ describe('Delete movie use case', () => {
     jest.spyOn(movieRepository, 'find').mockImplementation(async () => null);
     jest
       .spyOn(movieRepository, 'delete')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => undefined);
 
     expect(() => deleteMovie.execute({ id: '' })).rejects.toBeInstanceOf(
       InvalidUuidError,

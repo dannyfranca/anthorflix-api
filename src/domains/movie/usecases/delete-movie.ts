@@ -12,9 +12,9 @@ export class DeleteMovie {
   async execute(dto: UniqueIdInput) {
     const uniqueId = new UniqueEntityId(dto.id);
 
-    if (!(await this.movieRepository.find(uniqueId.value)))
+    if (!(await this.movieRepository.find(uniqueId)))
       throw new NotFoundError('Movie not found');
 
-    return this.movieRepository.delete(dto.id);
+    await this.movieRepository.delete(uniqueId);
   }
 }

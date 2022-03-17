@@ -2,7 +2,7 @@ import { CreateMovie } from './create-movie';
 import { MovieRepository } from '../infra/movie.repository';
 import { PrismaService } from '@/@seedwork/infra/prisma.service';
 import InvalidNameError from '@/@seedwork/errors/invalid-name.error';
-import { makeRandomPlainMovie } from '../utils';
+import { makeRandomMovie } from '../utils';
 import InvalidDescriptionError from '@/@seedwork/errors/invalid-description.error';
 
 describe('Create movie use case', () => {
@@ -10,7 +10,7 @@ describe('Create movie use case', () => {
   let movieRepository: MovieRepository;
 
   beforeEach(async () => {
-    movieRepository = new MovieRepository({} as PrismaService);
+    movieRepository = new MovieRepository({} as any);
     createMovie = new CreateMovie(movieRepository);
     jest.clearAllMocks();
   });
@@ -18,19 +18,22 @@ describe('Create movie use case', () => {
   it('should create', async () => {
     jest
       .spyOn(movieRepository, 'create')
-      .mockImplementation(async () => plainMovie);
+      .mockImplementation(async () => undefined);
+    jest.spyOn(movieRepository, 'find').mockImplementation(async () => movie);
 
-    const plainMovie = makeRandomPlainMovie();
+    const movie = makeRandomMovie();
+    const plainMovie = movie.plain;
 
-    expect(await createMovie.execute(plainMovie)).toMatchObject(plainMovie);
+    expect(await createMovie.execute(plainMovie)).toMatchObject(movie);
   });
 
   it('should throw Errors', () => {
     jest
       .spyOn(movieRepository, 'create')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => undefined);
 
-    const plainMovie = makeRandomPlainMovie();
+    const movie = makeRandomMovie();
+    const plainMovie = movie.plain;
 
     expect(() =>
       createMovie.execute({ ...plainMovie, title: 'a' }),

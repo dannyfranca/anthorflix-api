@@ -1,6 +1,6 @@
 import { ListMovie } from './list-movie';
 import { MovieRepository } from '../infra/movie.repository';
-import { makeRandomPlainMovie } from '../utils';
+import { makeRandomMovie, makeRandomPlainMovie } from '../utils';
 
 describe('List movie use case', () => {
   let listMovie: ListMovie;
@@ -15,14 +15,14 @@ describe('List movie use case', () => {
   it('should list two', async () => {
     jest
       .spyOn(movieRepository, 'list')
-      .mockImplementation(async () => [plainMovie1, plainMovie2]);
+      .mockImplementation(async () => [movie1, movie2]);
 
-    const plainMovie1 = makeRandomPlainMovie();
-    const plainMovie2 = makeRandomPlainMovie();
+    const movie1 = makeRandomMovie();
+    const movie2 = makeRandomMovie();
 
     const result = await listMovie.execute();
     expect(result.length).toBe(2);
-    expect(result).toMatchObject([plainMovie1, plainMovie2]);
+    expect(result).toMatchObject([movie1, movie2]);
   });
 
   it('should list empty array', async () => {

@@ -1,7 +1,7 @@
 import { PlainMovie } from '../entities/movie';
 import { FindMovie } from './find-movie';
 import { MovieRepository } from '../infra/movie.repository';
-import { makeRandomPlainMovie } from '../utils';
+import { makeRandomMovie, makeRandomPlainMovie } from '../utils';
 import InvalidUuidError from '@/@seedwork/errors/invalid-uuid.error';
 import NotFoundError from '@/@seedwork/errors/not-found.error';
 
@@ -18,12 +18,12 @@ describe('Find movie use case', () => {
   });
 
   it('should find movie', async () => {
-    jest
-      .spyOn(movieRepository, 'find')
-      .mockImplementation(async () => plainMovie);
+    jest.spyOn(movieRepository, 'find').mockImplementation(async () => movie);
 
-    const result = await findMovie.execute(plainMovie.id);
-    expect(result).toStrictEqual(plainMovie);
+    const movie = makeRandomMovie();
+
+    const result = await findMovie.execute(movie.id.value);
+    expect(result).toStrictEqual(movie);
   });
 
   it('should not find movie', async () => {
@@ -35,9 +35,9 @@ describe('Find movie use case', () => {
   });
 
   it('should throw InvalidUniqueIdError', async () => {
-    jest
-      .spyOn(movieRepository, 'find')
-      .mockImplementation(async () => plainMovie);
+    jest.spyOn(movieRepository, 'find').mockImplementation(async () => movie);
+
+    const movie = makeRandomMovie();
 
     expect(() => findMovie.execute('abc')).rejects.toThrow(InvalidUuidError);
   });
