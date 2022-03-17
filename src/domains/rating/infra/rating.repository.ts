@@ -21,7 +21,14 @@ export class RatingRepository {
         deleted_at: null,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            created_at: true,
+            deleted_at: true,
+          },
+        },
       },
       take: 1,
     });
