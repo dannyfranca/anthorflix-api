@@ -1,7 +1,8 @@
 import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
+import Username from '@/@seedwork/entities/username';
 import { PlainUser, User } from './user';
 
-const username = 'some_user';
+const username = new Username('some_user');
 
 describe('User Tests', () => {
   test('user constructor', () => {
@@ -9,7 +10,7 @@ describe('User Tests', () => {
     let created_at: Date;
 
     expect(user.plain).toMatchObject({
-      username,
+      username: username.value,
     } as PlainUser);
     expect(user.created_at).toBeInstanceOf(Date);
 
@@ -19,12 +20,12 @@ describe('User Tests', () => {
       created_at,
     });
     expect(user.plain).toMatchObject({
-      username,
+      username: username.value,
       created_at,
     } as PlainUser);
 
     created_at = new Date();
-    user = new User({ username: 'another_user', created_at });
+    user = new User({ username: new Username('another_user'), created_at });
     expect(user.plain).toMatchObject({
       username: 'another_user',
       created_at,

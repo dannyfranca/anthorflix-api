@@ -7,6 +7,7 @@ import { CreateGenre } from './usecases/create-genre';
 import { ListGenre } from './usecases/list-genre';
 import { UpdateGenre } from './usecases/update-genre';
 import { DeleteGenre } from './usecases/delete-genre';
+import { FindGenre } from './usecases/find-genre';
 
 @Module({
   imports: [],
@@ -14,6 +15,7 @@ import { DeleteGenre } from './usecases/delete-genre';
   providers: [
     GenreResolver,
     GenreRepository,
+    FindGenre,
     ListGenre,
     CreateGenre,
     UpdateGenre,

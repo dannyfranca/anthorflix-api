@@ -5,7 +5,7 @@ import InvalidUuidError from '@/@seedwork/errors/invalid-uuid.error';
 import InvalidNameError from '@/@seedwork/errors/invalid-name.error';
 import InvalidDescriptionError from '@/@seedwork/errors/invalid-description.error';
 import { UpdateMovie } from './update-movie';
-import { makeRandomPlainMovie } from '../utils';
+import { makeRandomMovie, makeRandomPlainMovie } from '../utils';
 import { MovieRepository } from '../infra/movie.repository';
 
 const newName = 'Another Name';
@@ -21,18 +21,16 @@ describe('Update movie use case', () => {
   });
 
   it('should update', async () => {
-    const plainMovie = makeRandomPlainMovie();
-
-    jest
-      .spyOn(movieRepository, 'find')
-      .mockImplementation(async (id) => plainMovie);
+    jest.spyOn(movieRepository, 'find').mockImplementation(async (id) => movie);
     jest
       .spyOn(movieRepository, 'update')
-      .mockImplementation(async () => plainMovie);
+      .mockImplementation(async () => undefined);
+
+    const movie = makeRandomMovie();
 
     expect(
-      await updateMovie.execute({ id: plainMovie.id }, { title: newName }),
-    ).toMatchObject(plainMovie);
+      await updateMovie.execute({ id: movie.id.value }, { title: newName }),
+    ).toBeUndefined();
   });
 
   it('should throw NotFoundError', async () => {
@@ -41,7 +39,7 @@ describe('Update movie use case', () => {
     jest.spyOn(movieRepository, 'find').mockImplementation(async () => null);
     jest
       .spyOn(movieRepository, 'update')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => undefined);
 
     expect(() =>
       updateMovie.execute({ id: uniqueId.value }, { title: newName }),
@@ -53,10 +51,10 @@ describe('Update movie use case', () => {
 
     jest
       .spyOn(movieRepository, 'find')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => makeRandomMovie());
     jest
       .spyOn(movieRepository, 'update')
-      .mockImplementation(async () => makeRandomPlainMovie());
+      .mockImplementation(async () => undefined);
 
     expect(() =>
       updateMovie.execute({ id: 'abc' }, { title: newName }),

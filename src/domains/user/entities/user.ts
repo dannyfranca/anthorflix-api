@@ -4,9 +4,10 @@ import {
   EntityPropertiesInput,
   PlainEntity,
 } from '@/@seedwork/entities/entity';
+import Username from '@/@seedwork/entities/username';
 
 export interface UserProperties extends EntityProperties {
-  username: string;
+  username: Username;
 }
 
 export interface UserPropertiesInput
@@ -18,7 +19,7 @@ export interface PlainUser extends PlainEntity {
 }
 
 export class User extends Entity {
-  private _username: string;
+  private _username: Username;
 
   constructor(props: UserPropertiesInput) {
     super(props);
@@ -28,7 +29,7 @@ export class User extends Entity {
   get plain(): PlainUser {
     return {
       ...super.plain,
-      username: this.username,
+      username: this.username.value,
     };
   }
 

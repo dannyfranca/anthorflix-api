@@ -1,9 +1,7 @@
-import { omit } from 'lodash';
-
 import { PrismaTestController } from '@/@seedwork/infra/prisma-test-controller';
-import { PlainMovie } from '../entities/movie';
+import { Movie } from '../entities/movie';
 import { MovieRepository } from './movie.repository';
-import { makeRandomPlainMovie } from '../utils';
+import { makeRandomMovie } from '../utils';
 import { longRunJestTimeout } from '@/@seedwork/config';
 
 describe('MovieRepository', () => {
@@ -20,66 +18,38 @@ describe('MovieRepository', () => {
   });
 
   it('should create, update and delete', async () => {
-    let newPlainMovie: PlainMovie;
     let newTitle: string;
     let newDesc: string;
     let newYear: number;
-    const plainMovie: PlainMovie = makeRandomPlainMovie();
-    newPlainMovie = { ...plainMovie };
+    const movie: Movie = makeRandomMovie();
 
-    expect(await movieRepository.find(plainMovie.id)).toBeNull();
-    expect(await movieRepository.create(plainMovie)).toMatchObject(plainMovie);
-    expect(await movieRepository.find(plainMovie.id)).toMatchObject(plainMovie);
+    expect(await movieRepository.find(movie.id)).toBeNull();
+    await movieRepository.create(movie);
+    expect(await movieRepository.find(movie.id)).toStrictEqual(movie);
 
     newTitle = 'Another Name';
-    newPlainMovie = { ...newPlainMovie, title: newTitle };
-    expect(
-      await movieRepository.update({ id: plainMovie.id }, { title: newTitle }),
-    ).toMatchObject(newPlainMovie);
-    expect(await movieRepository.find(plainMovie.id)).toMatchObject(
-      newPlainMovie,
-    );
+    movie.title.changeName(newTitle);
+    await movieRepository.update(movie);
+    expect(await movieRepository.find(movie.id)).toStrictEqual(movie);
 
     newDesc = 'Another Desc';
-    newPlainMovie = { ...newPlainMovie, description: newDesc };
-    expect(
-      await movieRepository.update(
-        { id: plainMovie.id },
-        { description: newDesc },
-      ),
-    ).toMatchObject(newPlainMovie);
-    expect(await movieRepository.find(plainMovie.id)).toMatchObject(
-      newPlainMovie,
-    );
-
     newYear = 2014;
-    newPlainMovie = { ...newPlainMovie, year_launched: newYear };
-    expect(
-      await movieRepository.update(
-        { id: plainMovie.id },
-        { year_launched: newYear },
-      ),
-    ).toMatchObject(newPlainMovie);
-    expect(await movieRepository.find(plainMovie.id)).toMatchObject(
-      newPlainMovie,
-    );
+    movie.description.changeDescription(newTitle);
+    movie.changeYearLaunched(2014);
+    await movieRepository.update(movie);
+    expect(await movieRepository.find(movie.id)).toStrictEqual(movie);
 
-    const deletedMovie = await movieRepository.delete(plainMovie.id);
-    expect(deletedMovie).toMatchObject(omit(newPlainMovie, 'deleted_at'));
-    expect(deletedMovie.deleted_at).toBeInstanceOf(Date);
-    expect(await movieRepository.find(plainMovie.id)).toBeNull();
+    await movieRepository.delete(movie.id);
+    expect(await movieRepository.find(movie.id)).toBeNull();
   });
 
   it('should create and list two movies', async () => {
-    const plainMovie1 = makeRandomPlainMovie();
-    const plainMovie2 = makeRandomPlainMovie();
+    const movie1 = makeRandomMovie();
+    const movie2 = makeRandomMovie();
 
-    await movieRepository.create(plainMovie1);
-    await movieRepository.create(plainMovie2);
+    await movieRepository.create(movie1);
+    await movieRepository.create(movie2);
 
-    expect(await movieRepository.list()).toStrictEqual([
-      plainMovie1,
-      plainMovie2,
-    ]);
+    expect(await movieRepository.list()).toStrictEqual([movie1, movie2]);
   });
 });

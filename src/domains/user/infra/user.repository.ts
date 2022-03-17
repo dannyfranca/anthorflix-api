@@ -21,6 +21,17 @@ export class UserRepository {
     });
   }
 
+  async usernameExists(username: string): Promise<boolean> {
+    return await this.prisma.user
+      .count({
+        where: {
+          username,
+        },
+        take: 1,
+      })
+      .then(Boolean);
+  }
+
   async list(): Promise<PlainUser[]> {
     return await this.prisma.user.findMany({
       where: {

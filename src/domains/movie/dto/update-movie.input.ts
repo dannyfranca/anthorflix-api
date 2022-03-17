@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 
 import { UniqueIdInput } from '@/@seedwork/dto/unique-id.input';
 
@@ -15,4 +15,16 @@ export class UpdateMovieDataInput {
 
   @Field(() => Int, { nullable: true })
   year_launched?: number;
+
+  @Field(() => String, { nullable: true })
+  thumb?: string;
+
+  @Field(() => [ID], { nullable: true })
+  genres_ids?: string[];
+
+  @Field(() => [ID], { nullable: true })
+  directors_ids?: string[];
+
+  @Field(() => [ID], { nullable: true })
+  cast_members_ids?: string[];
 }

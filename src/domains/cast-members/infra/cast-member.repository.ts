@@ -28,9 +28,7 @@ export class CastMemberRepository {
   async list(): Promise<PlainCastMember[]> {
     return await this.prisma.castMember.findMany({
       where: {
-        deleted_at: {
-          not: null,
-        },
+        deleted_at: null,
       },
     });
   }

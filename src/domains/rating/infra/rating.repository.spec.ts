@@ -5,7 +5,7 @@ import { PlainRating } from '../entities/rating';
 import { RatingRepository } from './rating.repository';
 import { makeRandomPlainRating } from '../utils';
 import { MovieRepository } from '@/domains/movie/infra/movie.repository';
-import { makeRandomPlainMovie } from '@/domains/movie/utils';
+import { makeRandomMovie } from '@/domains/movie/utils';
 import { UserRepository } from '@/domains/user/infra/user.repository';
 import { longRunJestTimeout } from '@/@seedwork/config';
 
@@ -18,10 +18,8 @@ describe('RatingRepository', () => {
 
   const createMovieAndUser = async (plainRating: PlainRating) => {
     await userRepository.create(plainRating.user);
-    await movieRepository.create({
-      ...makeRandomPlainMovie(),
-      id: plainRating.movie_id,
-    });
+    const movie = makeRandomMovie({ id: plainRating.movie_id });
+    await movieRepository.create(movie);
   };
 
   beforeEach(async () => {
