@@ -19,7 +19,7 @@ export class CreateRating {
   ) {}
 
   async execute(dto: CreateRatingInput & { user_id: string }) {
-    if (!(await this.movieRepository.find(dto.movie_id)))
+    if (!(await this.movieRepository.find(new UniqueEntityId(dto.movie_id))))
       throw new NotFoundError('Movie does not exist');
 
     const plainUser = await this.userRepository.find(dto.user_id);
