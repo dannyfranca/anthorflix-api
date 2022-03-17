@@ -1,3 +1,4 @@
+import { randomPassword } from '@/@seedwork/utils/mock';
 import InvalidPasswordError from '../errors/invalid-password.error';
 import Password from './password';
 
@@ -5,6 +6,7 @@ describe('Password value object', () => {
   it('should accept passwords', () => {
     expect(() => new Password('Abc4$ccc')).not.toThrowError();
     expect(() => new Password('abcA4$cca35$&gghfdfg')).not.toThrowError();
+    expect(() => new Password(randomPassword())).not.toThrowError();
   });
 
   it('should throw InvalidUsernameError error', () => {
@@ -13,7 +15,7 @@ describe('Password value object', () => {
       InvalidPasswordError,
     );
     expect(() => new Password('Abc4$cc')).toThrowError(InvalidPasswordError);
-    expect(() => new Password('abcA4$cca35$&gghfdfga'.repeat(31))).toThrowError(
+    expect(() => new Password('abcA4$cca35$&gghfdfga')).toThrowError(
       InvalidPasswordError,
     );
     expect(() => new Password('abc4$ccc')).toThrowError(InvalidPasswordError);
