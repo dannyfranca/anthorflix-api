@@ -6,6 +6,7 @@ import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { PlainCastMember } from '../entities/cast-member';
 import { CastMemberRepository } from './cast-member.repository';
 import { longRunJestTimeout } from '@/@seedwork/config';
+import { makeRandomPlainCastMember } from '../utils';
 
 describe('CastMemberRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -23,14 +24,7 @@ describe('CastMemberRepository', () => {
   });
 
   it('should create, list and delete', async () => {
-    const uniqueId = new UniqueEntityId();
-    const plainCastMember: PlainCastMember = {
-      id: uniqueId.value,
-      name: 'Some Name',
-      // type: CastMemberType.ACTOR,
-      created_at: now(),
-      deleted_at: null,
-    };
+    const plainCastMember = makeRandomPlainCastMember();
     const newName = 'Another Name';
     const newPlainCastMember = { ...plainCastMember, name: newName };
 
@@ -60,5 +54,18 @@ describe('CastMemberRepository', () => {
     expect(await castMemberRepository.find(plainCastMember.id)).toBeNull();
 
     expect(true).toBe(true);
+  });
+
+  it('should create and list two castMembers', async () => {
+    const plainCastMember = makeRandomPlainCastMember();
+    const plainCastMember2 = makeRandomPlainCastMember();
+
+    await castMemberRepository.create(plainCastMember);
+    await castMemberRepository.create(plainCastMember2);
+
+    expect(await castMemberRepository.list()).toMatchObject([
+      plainCastMember,
+      plainCastMember2,
+    ]);
   });
 });

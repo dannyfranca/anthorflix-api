@@ -2,9 +2,11 @@ import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { PlainRating, Rating } from './rating';
 import { User } from '@/domains/user/entities/user';
 import Description from '@/@seedwork/entities/description';
+import Username from '@/@seedwork/entities/username';
 
 const contentStr = 'Some rating content';
-const generateUser = () => new User({ username: 'rating_user' });
+const username = new Username('some_user');
+const generateUser = () => new User({ username });
 const generateUniqueId = () => new UniqueEntityId();
 
 describe('Rating Tests', () => {

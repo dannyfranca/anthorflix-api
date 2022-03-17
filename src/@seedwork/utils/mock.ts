@@ -13,6 +13,11 @@ export const randomUsername = () =>
 export const randomName = () => chance.sentence({ words: 2 });
 export const randomDesc = (words = 10) => chance.sentence({ words });
 export const randomYear = () => chance.integer({ min: 1960, max: 2020 });
+export const randomPassword = () =>
+  chance.string({ pool: 'abcde', length: 3 }) +
+  chance.string({ pool: 'ABCDE', length: 3 }) +
+  chance.string({ pool: '12345', length: 3 }) +
+  chance.string({ pool: '$&', length: 3 });
 export const randomDate = () =>
   chance.date({
     min: new Date(1960),

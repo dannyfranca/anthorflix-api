@@ -5,6 +5,7 @@ import { PlainGenre } from '../entities/genre';
 import { GenreRepository } from './genre.repository';
 import { omit } from 'lodash';
 import { longRunJestTimeout } from '@/@seedwork/config';
+import { makeRandomPlainGenre } from '../utils';
 
 describe('GenreRepository', () => {
   const prismaTestController = new PrismaTestController();
@@ -19,7 +20,7 @@ describe('GenreRepository', () => {
     await prismaTestController.destroy();
   });
 
-  it('should create, list and delete', async () => {
+  it('should create and delete', async () => {
     const uniqueId = new UniqueEntityId();
     const plainGenre: PlainGenre = {
       id: uniqueId.value,
@@ -45,5 +46,18 @@ describe('GenreRepository', () => {
     expect(await genreRepository.find(plainGenre.id)).toBeNull();
 
     expect(true).toBe(true);
+  });
+
+  it('should create and list two genres', async () => {
+    const plainGenre = makeRandomPlainGenre();
+    const plainGenre2 = makeRandomPlainGenre();
+
+    await genreRepository.create(plainGenre);
+    await genreRepository.create(plainGenre2);
+
+    expect(await genreRepository.list()).toMatchObject([
+      plainGenre,
+      plainGenre2,
+    ]);
   });
 });

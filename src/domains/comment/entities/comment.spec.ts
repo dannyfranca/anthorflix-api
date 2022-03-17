@@ -2,10 +2,12 @@ import UniqueEntityId from '@/@seedwork/entities/unique-entity-id';
 import { Comment, PlainComment } from './comment';
 import { User } from '@/domains/user/entities/user';
 import RequiredDescription from '@/@seedwork/entities/required-description';
+import Username from '@/@seedwork/entities/username';
 
 const contentStr = 'Some comment content';
 const rating_id = new UniqueEntityId();
-const generateUser = () => new User({ username: 'some_user' });
+const username = new Username('some_user');
+const generateUser = () => new User({ username });
 
 describe('Comment Tests', () => {
   test('comment constructor', () => {
