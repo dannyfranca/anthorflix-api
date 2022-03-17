@@ -89,4 +89,10 @@ describe('Movie Tests', () => {
     });
     expect(movie.created_at).toBe(created_at);
   });
+
+  it('should change thumb', () => {
+    const movie = new Movie(generateMoviePropsWithThumb());
+    movie.changeThumb(new Thumb({ url: new Url('domain.com') }));
+    expect(movie.thumb?.url).toBe('domain.com');
+  });
 });
